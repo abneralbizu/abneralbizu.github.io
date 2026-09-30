@@ -3,124 +3,176 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Abner Martinez — Systems and Security Portfolio</title>
+<title>Abner Martinez — Systems, Virtualization and Security</title>
 <meta name="description" content="Systems administration and security work by Abner Martinez: virtualization, Linux and Windows server administration, vulnerability management, and governance documentation.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="site-head">
+<div class="topbar">
   <div class="wrap">
-    <a class="brand" href="index.html">Abner Martinez</a>
-    <nav class="site-nav">
-      <a href="#work">Work</a>
-      <a href="#skills">Skills</a>
-      <a href="#background">Background</a>
-      <a href="#contact">Contact</a>
+    <a class="brand" href="index.html"><span class="dot"></span>ABNER MARTINEZ</a>
+    <nav>
+      <a href="#work">work</a>
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#contact">contact</a>
     </nav>
   </div>
-</header>
+</div>
 
-<main class="wrap">
-
-  <div class="hero">
-    <h1>Systems administration, virtualization, and security operations.</h1>
-    <p class="tagline">U.S. Army veteran, CompTIA Security+ certified, currently supporting Microsoft&nbsp;365 and endpoint operations on contract. This site documents the lab and coursework projects behind that — what I built, what I found, and what I would change.</p>
-    <ul class="credentials">
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Systems &middot; Virtualization &middot; Security Operations</p>
+    <h1>I build the environment, then I <em>break it on purpose</em>.</h1>
+    <p class="lede">U.S. Army veteran, CompTIA Security+ certified, working in IT support on contract while finishing a second degree. Below is the lab work behind that &mdash; what I built, what I found, and the parts that went wrong.</p>
+    <ul class="creds">
       <li>CompTIA Security+ ce</li>
       <li>DoD 8140 IAT Level II</li>
       <li>B.S. Cybersecurity</li>
       <li>U.S. Army Veteran</li>
       <li>English / Español</li>
     </ul>
-    <div class="intro">
-      <p>Every project below is <strong>academic and lab work</strong>, and it is labeled that way on each page. None of it was performed for a commercial client. What it does show is the work itself: the environments I built, the scans I ran, the findings I acted on, and the reasoning behind each decision — including the parts that went wrong and what fixing them taught me.</p>
+
+    <div class="metrics">
+      <div><span class="n">43</span><span class="l">tickets worked</span></div>
+      <div><span class="n">94&rarr;1</span><span class="l">findings remediated</span></div>
+      <div><span class="n">10</span><span class="l">host lab built</span></div>
+      <div><span class="n">3</span><span class="l">hypervisors compared</span></div>
     </div>
   </div>
+</header>
+
+<main>
 
   <section id="work">
-    <h2>Selected work</h2>
-    <div class="cards">
+    <div class="wrap">
+      <div class="sec-head"><h2>Selected work</h2></div>
+      <div class="cards">
 
-      <a class="card" href="projects/vulnerability-management-program.html">
-        <h3>Vulnerability management across a ten-host enterprise lab</h3>
-        <p>Built and scanned a two-site, ten-host environment — domain controllers, mail, web, firewall, scanner — then worked 43 findings through a ticketed remediation process with evidence at each step.</p>
-        <div class="tags"><span>Nessus</span><span>Proxmox VE</span><span>OPNsense</span><span>Nmap</span><span>Windows Server</span><span>Rocky Linux</span></div>
-      </a>
+        <a class="card" href="projects/vulnerability-management-program.html">
+          <span class="idx">01</span>
+          <h3>Vulnerability management across a ten-host enterprise lab</h3>
+          <div>
+            <p>Built and scanned a two-site environment &mdash; domain controllers, mail, web, firewall, scanner &mdash; then worked every finding through a ticketed remediation process with evidence at each step.</p>
+            <span class="stat">43 tickets &middot; 22 closed &middot; 2 sites</span>
+            <div class="tags"><span>Nessus</span><span>Proxmox VE</span><span>OPNsense</span><span>Nmap</span><span>Windows Server</span><span>Rocky Linux</span></div>
+          </div>
+        </a>
 
-      <a class="card" href="projects/hypervisor-lab.html">
-        <h3>Three hypervisors, one lab: Fusion, UTM/QEMU, and Proxmox</h3>
-        <p>Built the same Linux guests on three platforms to compare them honestly — and spent most of the time tracing a network failure that the interface reported as a success.</p>
-        <div class="tags"><span>VMware Fusion</span><span>UTM / QEMU</span><span>Proxmox VE</span><span>Apple Silicon</span><span>Troubleshooting</span></div>
-      </a>
+        <a class="card" href="projects/hypervisor-lab.html">
+          <span class="idx">02</span>
+          <h3>Three hypervisors, one lab: Fusion, UTM/QEMU, and Proxmox</h3>
+          <div>
+            <p>Built the same Linux guests on three platforms to compare them honestly &mdash; and spent most of the time tracing a network failure that the interface reported as a success.</p>
+            <span class="stat">4 guests &middot; 3 platforms &middot; 1 silent failure</span>
+            <div class="tags"><span>VMware Fusion</span><span>UTM / QEMU</span><span>Proxmox VE</span><span>Apple Silicon</span></div>
+          </div>
+        </a>
 
-      <a class="card" href="projects/ansible-aws-automation.html">
-        <h3>Agentless automation: Ansible from bare VM to cloud instance</h3>
-        <p>Stood up a control node and a managed node, moved from password prompts to key-based authentication, then pushed the same approach out to AWS and provisioned an instance from a playbook.</p>
-        <div class="tags"><span>Ansible</span><span>Fedora</span><span>Ubuntu Server</span><span>AWS EC2</span><span>IAM</span><span>SSH</span></div>
-      </a>
+        <a class="card" href="projects/ansible-aws-automation.html">
+          <span class="idx">03</span>
+          <h3>Agentless automation: Ansible from bare VM to cloud instance</h3>
+          <div>
+            <p>Stood up a control node and a managed node, moved from password prompts to key-based authentication, then pushed the same approach out to AWS and provisioned an instance from a playbook.</p>
+            <span class="stat">2 nodes &middot; 0 agents &middot; 1 playbook</span>
+            <div class="tags"><span>Ansible</span><span>Fedora</span><span>Ubuntu Server</span><span>AWS EC2</span><span>IAM</span><span>SSH</span></div>
+          </div>
+        </a>
 
-      <a class="card" href="projects/firewall-scan-validation.html">
-        <h3>Measuring what a host firewall actually buys you</h3>
-        <p>Scanned the same host twice — firewall off, then firewall on with a scoped rule — and recorded the difference instead of assuming it.</p>
-        <div class="tags"><span>Nessus</span><span>Windows Firewall</span><span>CVSS</span><span>SMB</span></div>
-      </a>
+        <a class="card" href="projects/firewall-scan-validation.html">
+          <span class="idx">04</span>
+          <h3>Measuring what a host firewall actually buys you</h3>
+          <div>
+            <p>Scanned the same host twice &mdash; firewall off, then firewall on with a scoped rule &mdash; and recorded the difference instead of assuming it.</p>
+            <span class="stat">19 findings &rarr; 0 &middot; same unpatched host</span>
+            <div class="tags"><span>Nessus</span><span>Windows Firewall</span><span>CVSS</span><span>SMB</span></div>
+          </div>
+        </a>
 
-      <a class="card" href="projects/system-hardening.html">
-        <h3>Hardening a server and proving it worked</h3>
-        <p>Took a neglected server from 46 Critical and 48 High findings down to a single Medium, validated by rescan — then argued why a lower number is not the same thing as a secure system.</p>
-        <div class="tags"><span>Nessus</span><span>OWASP ZAP</span><span>Patch management</span><span>TLS</span></div>
-      </a>
+        <a class="card" href="projects/system-hardening.html">
+          <span class="idx">05</span>
+          <h3>Hardening a server and proving it worked</h3>
+          <div>
+            <p>Took a neglected server from 46 Critical and 48 High findings down to a single Medium, validated by rescan &mdash; then argued why a lower number is not the same thing as a secure system.</p>
+            <span class="stat">94 Critical + High &rarr; 1 Medium</span>
+            <div class="tags"><span>Nessus</span><span>OWASP ZAP</span><span>Patch management</span><span>TLS</span></div>
+          </div>
+        </a>
 
-      <a class="card" href="projects/incident-report.html">
-        <h3>Writing the incident report, not just finding the bug</h3>
-        <p>A full access-control incident written the way an organization actually consumes one: scope, timeline, risk statement, stakeholders, and a remediation position someone can act on.</p>
-        <div class="tags"><span>Incident response</span><span>Access control</span><span>BSIMM</span><span>Technical writing</span></div>
-      </a>
+        <a class="card" href="projects/incident-report.html">
+          <span class="idx">06</span>
+          <h3>Writing the incident report, not just finding the bug</h3>
+          <div>
+            <p>A full access-control incident written the way an organization actually consumes one: scope, timeline, risk statement, stakeholders, and a remediation position someone can act on.</p>
+            <span class="stat">~6 months undetected exposure</span>
+            <div class="tags"><span>Incident response</span><span>Access control</span><span>BSIMM</span><span>Technical writing</span></div>
+          </div>
+        </a>
 
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="alt">
+    <div class="wrap">
+      <div class="sec-head"><h2>About</h2></div>
+      <div class="about-grid">
+        <img src="img/abner.jpg" alt="Abner Martinez" width="200" height="200">
+        <div>
+          <p>I spent four years in the U.S. Army as a Human Resources Specialist at Fort Bragg, where the work was records accuracy and regulatory compliance at scale &mdash; auditing personnel records against Army requirements, running inspections from Group to Battalion level, writing the standing procedures that governed recurring operations, and briefing what I found to the Company Commander and First Sergeant.</p>
+          <p>That turns out to be most of what security governance is: check the thing against the standard, document what you found, tell someone who can act on it, and write the procedure so the next person does it the same way. The technology was new to me. The discipline was not.</p>
+          <p>I hold a B.S. in Cybersecurity and an A.S. in Information Technology from Full Sail University, and I am completing a second bachelor's in Information Technology &mdash; the virtualization, cloud automation and database work on this site comes from that program. I work as an IT and technology support specialist on contract, and I read, write and speak English and Spanish fluently.</p>
+          <p><strong>Every project here is academic and lab work</strong>, and it is labeled that way on each page. None of it was performed for a commercial client. What it shows is the work itself: the environments I built, the scans I ran, the findings I acted on, and the reasoning behind each decision.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="skills">
-    <h2>Skills</h2>
-    <dl class="skills">
-      <dt>Linux administration</dt>
-      <dd>Rocky Linux, Ubuntu Server and Desktop, Fedora, Debian, Kali. Installation and partitioning, LVM, package management across dnf and apt, systemd service administration, SELinux contexts and file ownership, OpenSSH and key-based authentication, Apache virtual hosts, Samba file services.</dd>
+    <div class="wrap">
+      <div class="sec-head"><h2>Skills</h2></div>
+      <dl class="skills">
+        <div>
+          <dt>Linux administration</dt>
+          <dd>Rocky Linux, Ubuntu Server and Desktop, Fedora, Debian, Kali. Installation and partitioning, LVM, package management across dnf and apt, systemd service administration, SELinux contexts and file ownership, OpenSSH and key-based authentication, Apache virtual hosts, Samba file services.</dd>
 
-      <dt>Windows administration</dt>
-      <dd>Windows Server 2019, 2016 and 2008 R2; Windows 11, 10 and 7. Active Directory, DNS, DHCP, IIS, domain joins, NTFS and share permissions, host firewall configuration, PowerShell, Microsoft 365 administration.</dd>
+          <dt>Windows administration</dt>
+          <dd>Windows Server 2019, 2016 and 2008 R2; Windows 11, 10 and 7. Active Directory, DNS, DHCP, IIS, domain joins, NTFS and share permissions, host firewall configuration, PowerShell, Microsoft 365 administration.</dd>
 
-      <dt>Virtualization and containers</dt>
-      <dd>VMware Fusion, Proxmox VE, UTM/QEMU. VM provisioning, guest OS installation, virtual networking across bridged, NAT and host-only modes, clones and snapshots, cold and live migration, virtual storage. Docker and Docker Compose.</dd>
+          <dt>Virtualization and containers</dt>
+          <dd>VMware Fusion, Proxmox VE, UTM/QEMU. VM provisioning, guest OS installation, virtual networking across bridged, NAT and host-only modes, clones and snapshots, cold and live migration, virtual storage. Docker and Docker Compose.</dd>
 
-      <dt>Cloud</dt>
-      <dd>AWS — IAM users, groups and scoped policies, EC2, S3 static hosting, EFS over NFS, AWS CLI. Microsoft Azure — virtual networks, subnets, network security groups, load balancing.</dd>
+          <dt>Cloud</dt>
+          <dd>AWS &mdash; IAM users, groups and scoped policies, EC2, S3 static hosting, EFS over NFS, AWS CLI. Microsoft Azure &mdash; virtual networks, subnets, network security groups, load balancing.</dd>
+        </div>
+        <div>
+          <dt>Automation and scripting</dt>
+          <dd>Ansible inventories, ad-hoc modules and playbooks including the amazon.aws collection. Bash and Linux CLI, PowerShell, Python.</dd>
 
-      <dt>Automation and scripting</dt>
-      <dd>Ansible inventories, ad-hoc modules and playbooks including the amazon.aws collection. Bash and Linux CLI, PowerShell, Python.</dd>
+          <dt>Security and compliance</dt>
+          <dd>Tenable Nessus credentialed and non-credentialed scanning, Nmap, OWASP ZAP, CVSS triage, OS hardening and remediation validation. CIS Controls v8 and CIS Benchmarks, DISA STIGs, SCAP/OVAL, NIST SP 800-53, PCI DSS v4.0.1, ISO/IEC 27001, HIPAA Security Rule.</dd>
 
-      <dt>Security and compliance</dt>
-      <dd>Tenable Nessus credentialed and non-credentialed scanning, Nmap, OWASP ZAP, CVSS triage, OS hardening and remediation validation. CIS Controls v8 and CIS Benchmarks, DISA STIGs, SCAP/OVAL, NIST SP 800-53, PCI DSS v4.0.1, ISO/IEC 27001, HIPAA Security Rule.</dd>
+          <dt>Networking</dt>
+          <dd>TCP/IP, subnetting and addressing schemes, VLANs, DNS and DHCP, NFS, Cisco router and switch configuration, site-to-site IPsec VPN, OPNsense firewall, Wireshark.</dd>
 
-      <dt>Networking</dt>
-      <dd>TCP/IP, subnetting and addressing schemes, VLANs, DNS and DHCP, NFS, Cisco router and switch configuration, site-to-site IPsec VPN, OPNsense firewall, Wireshark.</dd>
-    </dl>
+          <dt>Documentation</dt>
+          <dd>Policy, standard and procedure authoring. Incident reporting, remediation tickets with evidence, runbooks and standing operating procedures, control gap analysis.</dd>
+        </div>
+      </dl>
+    </div>
   </section>
 
-  <section id="background">
-    <h2>Background</h2>
-    <p>I spent four years in the U.S. Army as a Human Resources Specialist at Fort Bragg, where the work was records accuracy and regulatory compliance at scale — auditing personnel records against Army requirements, running inspections from Group to Battalion level, writing and maintaining the standing procedures that governed recurring operations, and briefing what I found to the Company Commander and First Sergeant.</p>
-    <p>That turns out to be most of what security governance is: check the thing against the standard, document what you found, tell someone who can act on it, and write the procedure so the next person does it the same way. The technology was new to me. The discipline was not.</p>
-    <p>I hold a B.S. in Cybersecurity and an A.S. in Information Technology from Full Sail University, and I am currently completing a second bachelor's in Information Technology — the virtualization, cloud automation and database coursework on this site comes from that program. I work as an IT and technology support specialist on contract, and I read, write and speak English and Spanish fluently.</p>
-  </section>
-
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Saint Cloud, Florida &mdash; open to systems administration, IT support, and security roles in Central Florida or remote.</p>
-    <p>
-      <a href="mailto:abneralbizu@gmail.com">abneralbizu@gmail.com</a><br>
-      <a href="https://www.linkedin.com/in/abner-martinez-albizu-15368433a">LinkedIn</a>
-    </p>
+  <section id="contact" class="alt">
+    <div class="wrap">
+      <div class="sec-head"><h2>Contact</h2></div>
+      <p>Saint Cloud, Florida. Open to systems administration, IT support, and security roles in Central Florida or remote.</p>
+      <ul class="contact-links">
+        <li><a href="mailto:abneralbizu@gmail.com">abneralbizu@gmail.com</a></li>
+        <li><a href="https://www.linkedin.com/in/abner-martinez-albizu-15368433a">LinkedIn</a></li>
+        <li><a href="https://github.com/abneralbizu">GitHub</a></li>
+      </ul>
+    </div>
   </section>
 
 </main>

@@ -9,32 +9,36 @@
 </head>
 <body>
 
-<header class="site-head">
+
+<div class="topbar">
   <div class="wrap">
-    <a class="brand" href="../index.html">Abner Martinez</a>
-    <nav class="site-nav">
-      <a href="../index.html#work">Work</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#contact">Contact</a>
+    <a class="brand" href="../index.html"><span class="dot"></span>ABNER MARTINEZ</a>
+    <nav>
+      <a href="../index.html#work">work</a>
+      <a href="../index.html#about">about</a>
+      <a href="../index.html#skills">skills</a>
+      <a href="../index.html#contact">contact</a>
     </nav>
+  </div>
+</div>
+
+<header class="page-head">
+  <div class="wrap">
+    <p class="kicker">Academic project &middot; Threat Protection and Testing &middot; March 2026</p>
+    <h1>Measuring what a host firewall actually buys you</h1>
+    <p class="lede">Everyone says to turn the host firewall on. This was an attempt to say how much it is worth, by scanning the same machine twice — once exposed, once with the firewall enabled and a scoped rule in place — and recording the difference.</p>
+    <ul class="toolset">
+      <li>Tenable Nessus</li>
+      <li>Windows Firewall</li>
+      <li>CVSS</li>
+      <li>SMB</li>
+      <li>Windows 7 target</li>
+    </ul>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap narrow">
 <article>
-
-  <p class="eyebrow">Academic project &middot; Threat Protection and Testing &middot; March 2026</p>
-  <h1>Measuring what a host firewall actually buys you</h1>
-  <p class="summary">Everyone says to turn the host firewall on. This was an attempt to say how much it is worth, by scanning the same machine twice — once exposed, once with the firewall enabled and a scoped rule in place — and recording the difference.</p>
-
-  <ul class="meta">
-    <li>Tenable Nessus</li>
-    <li>Windows Firewall</li>
-    <li>CVSS</li>
-    <li>SMB</li>
-    <li>Windows 7 target</li>
-  </ul>
-
   <h2>The test</h2>
 
   <p>The target was a Windows 7 virtual machine — chosen because a legacy, unpatched host produces enough findings to make a before-and-after comparison meaningful. Two scans against the same machine, changing exactly one variable between them.</p>
@@ -45,11 +49,11 @@
       <tr><th>Severity</th><th>Firewall off</th><th>Firewall on, scoped rule</th></tr>
     </thead>
     <tbody>
-      <tr><td>Critical</td><td class="num">2</td><td class="num">0</td></tr>
-      <tr><td>High</td><td class="num">5</td><td class="num">0</td></tr>
-      <tr><td>Medium</td><td class="num">10</td><td class="num">0</td></tr>
-      <tr><td>Low</td><td class="num">2</td><td class="num">0</td></tr>
-      <tr><td>Informational</td><td class="num">46</td><td class="num">4</td></tr>
+      <tr><td>Critical</td><td class="num">2</td><td class="num good">0</td></tr>
+      <tr><td>High</td><td class="num">5</td><td class="num good">0</td></tr>
+      <tr><td>Medium</td><td class="num">10</td><td class="num good">0</td></tr>
+      <tr><td>Low</td><td class="num">2</td><td class="num good">0</td></tr>
+      <tr><td>Informational</td><td class="num">46</td><td class="num good">4</td></tr>
     </tbody>
   </table>
   </div>
@@ -103,7 +107,7 @@
 <footer class="site-foot">
   <div class="wrap">
     <span>&copy; 2026 Abner D. Martinez</span>
-    <span><a href="../index.html">Back to all work</a></span>
+    <span><a href="../index.html">&larr; All work</a></span>
   </div>
 </footer>
 

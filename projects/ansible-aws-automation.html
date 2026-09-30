@@ -9,34 +9,38 @@
 </head>
 <body>
 
-<header class="site-head">
+
+<div class="topbar">
   <div class="wrap">
-    <a class="brand" href="../index.html">Abner Martinez</a>
-    <nav class="site-nav">
-      <a href="../index.html#work">Work</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#contact">Contact</a>
+    <a class="brand" href="../index.html"><span class="dot"></span>ABNER MARTINEZ</a>
+    <nav>
+      <a href="../index.html#work">work</a>
+      <a href="../index.html#about">about</a>
+      <a href="../index.html#skills">skills</a>
+      <a href="../index.html#contact">contact</a>
     </nav>
+  </div>
+</div>
+
+<header class="page-head">
+  <div class="wrap">
+    <p class="kicker">Academic project &middot; Cloud Management Platforms &middot; September 2026</p>
+    <h1>Agentless automation: Ansible from bare VM to cloud instance</h1>
+    <p class="lede">Building a control node and a managed node from installation media, replacing password authentication with SSH keys, then extending the same control node out to AWS to provision an EC2 instance from a playbook — and terminating it, because cleanup is part of the workflow.</p>
+    <ul class="toolset">
+      <li>Ansible</li>
+      <li>Fedora Workstation</li>
+      <li>Ubuntu Server</li>
+      <li>VMware Fusion</li>
+      <li>AWS EC2 &amp; IAM</li>
+      <li>boto3</li>
+      <li>OpenSSH</li>
+    </ul>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap narrow">
 <article>
-
-  <p class="eyebrow">Academic project &middot; Cloud Management Platforms &middot; September 2026</p>
-  <h1>Agentless automation: Ansible from bare VM to cloud instance</h1>
-  <p class="summary">Building a control node and a managed node from installation media, replacing password authentication with SSH keys, then extending the same control node out to AWS to provision an EC2 instance from a playbook — and terminating it, because cleanup is part of the workflow.</p>
-
-  <ul class="meta">
-    <li>Ansible</li>
-    <li>Fedora Workstation</li>
-    <li>Ubuntu Server</li>
-    <li>VMware Fusion</li>
-    <li>AWS EC2 &amp; IAM</li>
-    <li>boto3</li>
-    <li>OpenSSH</li>
-  </ul>
-
   <h2>Two machines, two Linux families</h2>
 
   <p>The control node is Fedora Workstation; the managed node is Ubuntu Server. That pairing is deliberate — Fedora is RPM-based and managed with <code>dnf</code>, Ubuntu is Debian-based and managed with <code>apt</code>, and the same conceptual task turns out to have a different unit name, a different default state and a different management path depending on which system you are standing in front of.</p>
@@ -109,7 +113,7 @@
 <footer class="site-foot">
   <div class="wrap">
     <span>&copy; 2026 Abner D. Martinez</span>
-    <span><a href="../index.html">Back to all work</a></span>
+    <span><a href="../index.html">&larr; All work</a></span>
   </div>
 </footer>
 

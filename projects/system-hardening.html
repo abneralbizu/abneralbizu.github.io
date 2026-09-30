@@ -9,32 +9,36 @@
 </head>
 <body>
 
-<header class="site-head">
+
+<div class="topbar">
   <div class="wrap">
-    <a class="brand" href="../index.html">Abner Martinez</a>
-    <nav class="site-nav">
-      <a href="../index.html#work">Work</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#contact">Contact</a>
+    <a class="brand" href="../index.html"><span class="dot"></span>ABNER MARTINEZ</a>
+    <nav>
+      <a href="../index.html#work">work</a>
+      <a href="../index.html#about">about</a>
+      <a href="../index.html#skills">skills</a>
+      <a href="../index.html#contact">contact</a>
     </nav>
+  </div>
+</div>
+
+<header class="page-head">
+  <div class="wrap">
+    <p class="kicker">Academic project &middot; Securing Systems and Data &middot; 2026</p>
+    <h1>Hardening a server and proving it worked</h1>
+    <p class="lede">A neglected server carrying 46 Critical and 48 High findings, brought down to a single Medium and verified by rescan — followed by the argument that a lower number is not the same thing as a secure system.</p>
+    <ul class="toolset">
+      <li>Tenable Nessus</li>
+      <li>OWASP ZAP</li>
+      <li>Patch management</li>
+      <li>TLS / certificate analysis</li>
+      <li>FTP</li>
+    </ul>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap narrow">
 <article>
-
-  <p class="eyebrow">Academic project &middot; Securing Systems and Data &middot; 2026</p>
-  <h1>Hardening a server and proving it worked</h1>
-  <p class="summary">A neglected server carrying 46 Critical and 48 High findings, brought down to a single Medium and verified by rescan — followed by the argument that a lower number is not the same thing as a secure system.</p>
-
-  <ul class="meta">
-    <li>Tenable Nessus</li>
-    <li>OWASP ZAP</li>
-    <li>Patch management</li>
-    <li>TLS / certificate analysis</li>
-    <li>FTP</li>
-  </ul>
-
   <h2>Before and after</h2>
 
   <div class="table-scroll">
@@ -43,9 +47,9 @@
       <tr><th>Severity</th><th>Initial scan</th><th>After patching</th></tr>
     </thead>
     <tbody>
-      <tr><td>Critical</td><td class="num">46</td><td class="num">0</td></tr>
-      <tr><td>High</td><td class="num">48</td><td class="num">0</td></tr>
-      <tr><td>Medium</td><td class="num">&mdash;</td><td class="num">1</td></tr>
+      <tr><td>Critical</td><td class="num">46</td><td class="num good">0</td></tr>
+      <tr><td>High</td><td class="num">48</td><td class="num good">0</td></tr>
+      <tr><td>Medium</td><td class="num">&mdash;</td><td class="num good">1</td></tr>
     </tbody>
   </table>
   </div>
@@ -99,7 +103,7 @@
 <footer class="site-foot">
   <div class="wrap">
     <span>&copy; 2026 Abner D. Martinez</span>
-    <span><a href="../index.html">Back to all work</a></span>
+    <span><a href="../index.html">&larr; All work</a></span>
   </div>
 </footer>
 

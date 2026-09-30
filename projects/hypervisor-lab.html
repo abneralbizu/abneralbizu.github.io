@@ -9,35 +9,39 @@
 </head>
 <body>
 
-<header class="site-head">
+
+<div class="topbar">
   <div class="wrap">
-    <a class="brand" href="../index.html">Abner Martinez</a>
-    <nav class="site-nav">
-      <a href="../index.html#work">Work</a>
-      <a href="../index.html#skills">Skills</a>
-      <a href="../index.html#contact">Contact</a>
+    <a class="brand" href="../index.html"><span class="dot"></span>ABNER MARTINEZ</a>
+    <nav>
+      <a href="../index.html#work">work</a>
+      <a href="../index.html#about">about</a>
+      <a href="../index.html#skills">skills</a>
+      <a href="../index.html#contact">contact</a>
     </nav>
+  </div>
+</div>
+
+<header class="page-head">
+  <div class="wrap">
+    <p class="kicker">Academic project &middot; Virtualization Technologies &middot; August 2026</p>
+    <h1>Three hypervisors, one lab: Fusion, UTM/QEMU, and Proxmox</h1>
+    <p class="lede">Building the same four Linux guests on two desktop hypervisors to compare them honestly. Most of the time went not into the builds but into a VMware Fusion network configuration that accepted my input, reported success, and silently wrote nothing to disk.</p>
+    <ul class="toolset">
+      <li>VMware Fusion</li>
+      <li>UTM / QEMU</li>
+      <li>Proxmox VE</li>
+      <li>Apple Silicon (ARM64)</li>
+      <li>Ubuntu Server &amp; Desktop</li>
+      <li>Rocky Linux</li>
+      <li>Kali Linux</li>
+      <li>Debian</li>
+    </ul>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap narrow">
 <article>
-
-  <p class="eyebrow">Academic project &middot; Virtualization Technologies &middot; August 2026</p>
-  <h1>Three hypervisors, one lab: Fusion, UTM/QEMU, and Proxmox</h1>
-  <p class="summary">Building the same four Linux guests on two desktop hypervisors to compare them honestly. Most of the time went not into the builds but into a VMware Fusion network configuration that accepted my input, reported success, and silently wrote nothing to disk.</p>
-
-  <ul class="meta">
-    <li>VMware Fusion</li>
-    <li>UTM / QEMU</li>
-    <li>Proxmox VE</li>
-    <li>Apple Silicon (ARM64)</li>
-    <li>Ubuntu Server &amp; Desktop</li>
-    <li>Rocky Linux</li>
-    <li>Kali Linux</li>
-    <li>Debian</li>
-  </ul>
-
   <h2>The setup</h2>
 
   <p>Four guests, built twice: Ubuntu Desktop, Ubuntu Server, Rocky Linux and Kali — first under VMware Fusion, then under UTM. Everything ran on Apple Silicon, which constrains the exercise in a way worth stating up front: both products run ARM64 guests natively through Apple's hypervisor framework, so every image had to be an ARM64 build. That is not a detail you discover gracefully after downloading an x86 ISO.</p>
@@ -99,7 +103,7 @@
 <footer class="site-foot">
   <div class="wrap">
     <span>&copy; 2026 Abner D. Martinez</span>
-    <span><a href="../index.html">Back to all work</a></span>
+    <span><a href="../index.html">&larr; All work</a></span>
   </div>
 </footer>
 
