@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three hypervisors, one lab — Abner Martinez</title>
+<meta name="description" content="Building the same Linux guests on VMware Fusion, UTM/QEMU and Proxmox VE, and tracing a Fusion network failure the interface reported as a success.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Abner Martinez</a>
+    <nav class="site-nav">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article>
+
+  <p class="eyebrow">Academic project &middot; Virtualization Technologies &middot; August 2026</p>
+  <h1>Three hypervisors, one lab: Fusion, UTM/QEMU, and Proxmox</h1>
+  <p class="summary">Building the same four Linux guests on two desktop hypervisors to compare them honestly. Most of the time went not into the builds but into a VMware Fusion network configuration that accepted my input, reported success, and silently wrote nothing to disk.</p>
+
+  <ul class="meta">
+    <li>VMware Fusion</li>
+    <li>UTM / QEMU</li>
+    <li>Proxmox VE</li>
+    <li>Apple Silicon (ARM64)</li>
+    <li>Ubuntu Server &amp; Desktop</li>
+    <li>Rocky Linux</li>
+    <li>Kali Linux</li>
+    <li>Debian</li>
+  </ul>
+
+  <h2>The setup</h2>
+
+  <p>Four guests, built twice: Ubuntu Desktop, Ubuntu Server, Rocky Linux and Kali — first under VMware Fusion, then under UTM. Everything ran on Apple Silicon, which constrains the exercise in a way worth stating up front: both products run ARM64 guests natively through Apple's hypervisor framework, so every image had to be an ARM64 build. That is not a detail you discover gracefully after downloading an x86 ISO.</p>
+
+  <p>The installers themselves were the least interesting part, and the comparison between them was the most. Ubuntu's Subiquity confirms network reachability early and verifies the package mirror before installation begins, which tells you the virtual network is carrying traffic long before you have a running system to test it with. Rocky's Anaconda takes a different shape entirely — a single summary hub where you visit categories in any order, with warnings blocking installation until resolved, rather than a linear wizard.</p>
+
+  <h2>The part that actually took the time</h2>
+
+  <p>The assignment required a specific NAT subnet. Fusion has a settings pane for exactly this: unlock the network preferences, add a custom network, assign the subnet, click Apply.</p>
+
+  <p>It failed silently. No error, no confirmation, no visible change. The dialog accepted the input and appeared to save it.</p>
+
+  <p>The only way to confirm anything was wrong was to read Fusion's own configuration file and find that the new network entry was never written. From there the diagnosis moved outside the GUI entirely:</p>
+
+  <ul>
+    <li>Fusion's <strong>privileged helper tools had never installed</strong> on first launch — the directory that should have held them was empty.</li>
+    <li>The legacy network services script returned repeated load failures against its launch daemons.</li>
+    <li>Reinstalling the application placed the helper tools correctly, and a restart cleared the stale launchd state.</li>
+  </ul>
+
+  <p>Even then it would not write a custom network. The working fix was to modify the existing built-in NAT network directly — editing the host-only subnet value in the networking configuration, and making matching changes in the DHCP and NAT configuration files so addresses were issued from the correct range. That produced a functioning NAT network with DHCP and outbound connectivity, which is what the assignment wanted, by editing configuration files as root rather than using the interface provided for the purpose.</p>
+
+  <div class="callout">
+    <p><strong>The finding worth keeping.</strong> Fusion on Apple Silicon does not create the traditional <code>vmnet1</code> and <code>vmnet8</code> interfaces at all. It uses Apple's own vmnet framework, and the host-side interfaces appear as <code>bridge100</code> and <code>bridge101</code>.</p>
+    <p>Nearly every troubleshooting guide online tells you to check for <code>vmnet</code> with <code>ifconfig</code>. On this platform that returns nothing, and gives a completely false impression that networking is broken. I lost time to that before working out that the guides were written for Intel Macs.</p>
+  </div>
+
+  <h2>What the comparison showed</h2>
+
+  <p>Running the same builds under UTM made the differences concrete rather than theoretical.</p>
+
+  <p><strong>Fusion is the more finished product.</strong> Drag an ISO onto the new-machine window and it detects the guest operating system. It disconnects the installation media on reboot. It resizes the guest desktop to the window without guest tools being installed. All of that is real convenience.</p>
+
+  <p><strong>UTM is the more transparent one.</strong> It detects nothing — architecture, memory, core count and disk size are all entered by hand, four times for four machines. But every setting it exposes is a setting that actually takes effect, and the QEMU arguments it will pass are visible. The single configuration that consumed hours of root-level file editing under Fusion is, under UTM, a text field you type into, because networking is per-machine rather than a global preference pane.</p>
+
+  <p>The guest-visible differences were instructive too. Under UTM the disk presents as <code>/dev/vda</code> rather than <code>/dev/sda</code> — the paravirtualized virtio block device QEMU exposes instead of an emulated controller — and Rocky's installer names it as a Virtio Block Device outright. Interface naming differs for the same reason. If you ever need to work out which hypervisor a system is running on from inside the guest, that is where to look.</p>
+
+  <p>UTM also left installation media attached after install on three of four builds, so the firmware found the ISO again and booted the installer instead of the installed system. On Rocky there was no way to reach the installed system from inside the running machine at all — the only remedy was to shut down and clear the image from the configuration.</p>
+
+  <h2>Where a bare-metal hypervisor still wins</h2>
+
+  <p>Both desktop products handled four concurrent ARM64 guests comfortably. For quickly getting a Linux VM running on a Mac, either is fine, and both are now free.</p>
+
+  <p>But for lab networks with several custom subnets, I would still reach for Proxmox VE — which is where the ten-host environment in my <a href="vulnerability-management-program.html">vulnerability management project</a> lives. A bare-metal hypervisor gives you virtual networks as first-class objects instead of a preferences pane, plus clones, snapshots, and cold and live migration as ordinary operations. Desktop virtualization and datacenter virtualization solve genuinely different problems, and the network configuration is where that difference shows up first.</p>
+
+  <h2>What I would do differently</h2>
+
+  <ul>
+    <li><strong>Check for the helper tools before assuming the configuration is at fault.</strong> A privileged application that cannot write to a system directory will usually fail in exactly this quiet way, and that is now the first thing I check.</li>
+    <li><strong>Verify the platform assumptions in a troubleshooting guide before following it.</strong> The <code>vmnet</code> instructions were not wrong, they were written for different hardware.</li>
+    <li><strong>Build the ARM64 image list first.</strong> Sourcing matched-architecture media up front would have removed a whole category of early friction.</li>
+  </ul>
+
+  <p class="note">Coursework completed for Virtualization Technologies, Full Sail University, August 2026, on an Apple Silicon MacBook Pro. All guests were local lab machines.</p>
+
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>&copy; 2026 Abner D. Martinez</span>
+    <span><a href="../index.html">Back to all work</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

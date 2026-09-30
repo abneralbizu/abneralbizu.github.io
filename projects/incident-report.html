@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing the incident report — Abner Martinez</title>
+<meta name="description" content="An access-control incident written the way an organization consumes one: scope, timeline, risk statement, stakeholders and an actionable remediation position.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Abner Martinez</a>
+    <nav class="site-nav">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article>
+
+  <p class="eyebrow">Academic project &middot; Software Security &middot; January&ndash;February 2026</p>
+  <h1>Writing the incident report, not just finding the bug</h1>
+  <p class="summary">Finding a control failure is the easy half. This project was about the other half — producing a report an organization can actually route, fund and act on, and then assessing the program-level gaps that let the failure happen in the first place.</p>
+
+  <ul class="meta">
+    <li>Incident response reporting</li>
+    <li>Access control</li>
+    <li>Privilege escalation</li>
+    <li>BSIMM</li>
+    <li>GLBA / FERPA</li>
+  </ul>
+
+  <h2>The incident</h2>
+
+  <p>Critical access-control weaknesses in a student records application: unauthorized viewing, modification and deletion of student records, with a path to privilege escalation. The exposure had gone undetected for roughly six months.</p>
+
+  <p>That last detail is the one that changes the character of the report. A flaw found in testing is a defect. A flaw that has been live and unmonitored for half a year is an incident, because the question is no longer "can this be exploited" but "what happened during the window, and can we tell?" Undetected duration is what turns a vulnerability writeup into an incident writeup.</p>
+
+  <h2>Why the format is the work</h2>
+
+  <p>The report was written to the structure an organization actually consumes rather than as an essay: report date and author contact, the designated security officer, named stakeholders, an explicit risk statement, and remediation with urgency attached.</p>
+
+  <p>Each of those elements exists because of a specific failure mode in how findings get handled:</p>
+
+  <ul>
+    <li><strong>Author contact and date</strong> — so the report can be followed up on and so the timeline is fixed. A finding with no date cannot be correlated with anything.</li>
+    <li><strong>Named stakeholders</strong> — because a report addressed to nobody in particular gets actioned by nobody in particular. Records exposure is not solely a security problem; it reaches the registrar, legal and whoever owns the application.</li>
+    <li><strong>An explicit risk statement</strong> — translating the technical finding into the consequence a decision-maker is actually weighing. "Improper access control on the records endpoint" and "any authenticated user can alter another student's academic record without leaving an audit trail" describe the same defect, and only one of them gets funded.</li>
+    <li><strong>Remediation with urgency</strong> — a fix with no priority attached competes with everything else in the backlog and loses.</li>
+  </ul>
+
+  <p>The regulatory dimension mattered here too. Student records sit under FERPA, and the institution's financial operations bring GLBA into scope. Naming which obligations are implicated moves the conversation from engineering judgment to compliance exposure, which is frequently what determines how quickly something gets fixed.</p>
+
+  <div class="callout">
+    <p><strong>The connection to the rest of my work.</strong> Four years in Army personnel operations was largely this: audit against the standard, document what you found, brief it to someone who can act, and write the procedure so it is handled the same way next time.</p>
+    <p>The subject matter changed. The shape of the work — find it, evidence it, communicate it to a specific person in terms they can act on — did not.</p>
+  </div>
+
+  <h2>The program behind the incident</h2>
+
+  <p>A companion assessment used BSIMM to ask why the failure existed at all, rather than what the failure was. Three gaps stood out, and none of them is a bug:</p>
+
+  <ul>
+    <li><strong>No written security policies.</strong> Without documented expectations there is no standard to hold code to, and every review becomes a matter of individual judgment.</li>
+    <li><strong>No developer security training.</strong> Access-control logic is written by developers. If nobody has taught them the failure patterns, those patterns recur regardless of how good the security team is at finding them afterward.</li>
+    <li><strong>A disconnect between security and development.</strong> Findings arrive late, land as criticism, and get triaged against feature work.</li>
+  </ul>
+
+  <p>The recommendations followed BSIMM activities directly — publishing a documented process, and establishing a security champion inside the development organization rather than relying on an external function to catch everything downstream. That second one addresses the disconnect structurally instead of asking people to communicate better.</p>
+
+  <p>This is the layer I find most interesting, and it is why my work sits between operations and governance rather than in one or the other. Patching the finding closes one hole. Establishing why nobody wrote a policy, trained the developers, or noticed for six months is what stops the next one.</p>
+
+  <h2>What I would do differently</h2>
+
+  <ul>
+    <li><strong>Include a detection gap analysis.</strong> Six months undetected deserves its own section: what logging existed, what it would have taken to catch this, and what to instrument now. That is the most actionable part of the incident and I underweighted it.</li>
+    <li><strong>Add an explicit containment and evidence-preservation step</strong> ahead of remediation. Fixing first can destroy the record of what happened during the exposure window.</li>
+    <li><strong>State notification obligations concretely.</strong> Naming FERPA and GLBA is the start; who must be told, by whom, within what window is the part an organization needs on day one.</li>
+    <li><strong>Attach measurable follow-up</strong> — verification steps and a review date — so the report closes rather than trailing off.</li>
+  </ul>
+
+  <p class="note">Coursework completed for Software Security, Full Sail University, January&ndash;February 2026. The scenario was assigned as part of the course; this was a classroom exercise, not a real incident, and no live system was accessed.</p>
+
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>&copy; 2026 Abner D. Martinez</span>
+    <span><a href="../index.html">Back to all work</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

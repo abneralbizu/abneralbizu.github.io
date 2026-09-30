@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentless automation with Ansible — Abner Martinez</title>
+<meta name="description" content="Building an Ansible control node and managed node, moving to key-based authentication, and provisioning AWS EC2 from a playbook.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Abner Martinez</a>
+    <nav class="site-nav">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article>
+
+  <p class="eyebrow">Academic project &middot; Cloud Management Platforms &middot; September 2026</p>
+  <h1>Agentless automation: Ansible from bare VM to cloud instance</h1>
+  <p class="summary">Building a control node and a managed node from installation media, replacing password authentication with SSH keys, then extending the same control node out to AWS to provision an EC2 instance from a playbook — and terminating it, because cleanup is part of the workflow.</p>
+
+  <ul class="meta">
+    <li>Ansible</li>
+    <li>Fedora Workstation</li>
+    <li>Ubuntu Server</li>
+    <li>VMware Fusion</li>
+    <li>AWS EC2 &amp; IAM</li>
+    <li>boto3</li>
+    <li>OpenSSH</li>
+  </ul>
+
+  <h2>Two machines, two Linux families</h2>
+
+  <p>The control node is Fedora Workstation; the managed node is Ubuntu Server. That pairing is deliberate — Fedora is RPM-based and managed with <code>dnf</code>, Ubuntu is Debian-based and managed with <code>apt</code>, and the same conceptual task turns out to have a different unit name, a different default state and a different management path depending on which system you are standing in front of.</p>
+
+  <p>Three differences cost me time and were worth the lesson:</p>
+
+  <ul>
+    <li><strong>Service names are not standardized.</strong> Fedora calls the OpenSSH unit <code>sshd.service</code>; Ubuntu calls it <code>ssh.service</code>. Both are the same daemon. A command that works on one host fails on the other for no reason visible in the output.</li>
+    <li><strong>Defaults reflect what a system is built for.</strong> Ubuntu Server enables remote login by default because it assumes you will administer it remotely. Fedora Workstation, built as a desktop, does not. I initially read that as a mistake on my part; it is intentional design.</li>
+    <li><strong>A service reported as inactive may be socket-activated.</strong> Ubuntu reported the service as not running while connections to it worked fine — it wakes on an incoming connection rather than sitting resident. Running it continuously meant disabling that behavior. Status output is not always the same thing as system state.</li>
+  </ul>
+
+  <h2>From password prompts to key-based authentication</h2>
+
+  <p>The goal was to let the control node reach the managed node without a password prompt. I generated an RSA key pair on Fedora, distributed the public half with <code>ssh-copy-id</code>, and confirmed passwordless login over SSH.</p>
+
+  <p>The reason this matters is not convenience. A password prompt is fine when a person is sitting at the keyboard; it stops automation dead, because there is nobody there to answer it. Key distribution is the difference between a playbook you can schedule and a playbook you have to supervise.</p>
+
+  <p>Two things worth stating precisely. <code>ssh-copy-id</code> sends only the public half, which lands in the target's <code>authorized_keys</code>; the private key never leaves the control node. And the first attempt failed on host key verification, which I initially read as an error — it is not. SSH is asking you to confirm that the machine answering on that address is the machine you meant to reach, and it will not proceed on a guess. That check is the thing standing between you and a man-in-the-middle, and it wants the whole word "yes", not a keypress.</p>
+
+  <h2>A networking problem that had nothing to do with Ansible</h2>
+
+  <p>Before any of the key work could function, the two machines could not reach each other at all. They had ended up on different subnets with no route between them.</p>
+
+  <p>Diagnosing it meant comparing three addresses rather than two: the control node's, the managed node's, and the address of the physical interface on the host machine itself. That third value is what identifies which guest is genuinely bridged to the physical network and which is behind a hypervisor-managed NAT. The Ubuntu adapter was set to share the host's connection rather than bridge, so it could never have been reachable no matter what I did with keys.</p>
+
+  <p>The fix was to switch the adapter to bridged and select the wireless interface explicitly, rather than leaving it on autodetect — autodetect being what let the two machines drift apart in the first place.</p>
+
+  <div class="callout">
+    <p><strong>What "agentless" actually means.</strong> Running a process list on the target through Ansible returned three processes on a machine running around 180. Not a filtered view — that <em>was</em> the whole session: a shell, a Python interpreter, and the command itself, in a session Ansible had opened moments before and tore down immediately after.</p>
+    <p>That is the architecture made visible. There is no persistent daemon to install, patch and monitor. But agentless does not mean zero requirements — the modules Ansible pushes are Python, so the target still needs an interpreter. It means no resident agent, not no dependencies.</p>
+  </div>
+
+  <h2>Idempotence, and why the module matters</h2>
+
+  <p>The ping module returned <code>changed: false</code>. Every ad-hoc shell command returned CHANGED — including <code>date</code>, which obviously modifies nothing.</p>
+
+  <p>The command module has no way to inspect the system and determine whether anything actually changed, so it reports CHANGED unconditionally. That is precisely the limitation that makes a purpose-built module preferable to the shell whenever one exists for the job: a real module can tell you whether it needed to do anything, and a shell command can only tell you that it ran.</p>
+
+  <h2>Extending it to AWS</h2>
+
+  <p>The same control node then authenticated to AWS, which required only <code>boto3</code> and <code>botocore</code> installed alongside Ansible. Notably, nothing in the inventory or Ansible configuration points at AWS at all — the modules use boto3 underneath, and boto3 reads credentials from the environment automatically. The same credentials work for the AWS CLI or any Python script, unchanged.</p>
+
+  <p>On the IAM side I created a group, attached scoped managed policies to it covering EC2, ECS, ECR and S3, and then created a user and placed it in that group so permissions were inherited rather than attached directly. Group-level permissions are the practice worth keeping: attaching policies to individuals is what leaves orphaned access behind when someone changes roles.</p>
+
+  <p>Then the actual provisioning — a playbook describing a single EC2 instance, which produced a running machine without my touching the console. Three things that came out of it:</p>
+
+  <ul>
+    <li><strong>The playbook describes an end state, not a sequence of API calls.</strong> I never specified how to talk to the EC2 API, what order to do things in, or how to wait for the instance to come up. I described what the instance should look like.</li>
+    <li><strong>AMI IDs are region-scoped and architecture-specific.</strong> The same image is published under a different ID in each region, and separately for x86 and ARM. An AMI ID looks like a universal identifier and is not one.</li>
+    <li><strong>Free-tier eligibility is enforced at the API, not just on the bill.</strong> The first run was rejected outright for an instance type that was not free-tier eligible in that region. That is a good failure — the alternative is silently creating something chargeable and finding out later.</li>
+  </ul>
+
+  <p>I terminated the instance afterward. Worth noting that the playbook created it in about a minute and removing it was a manual console action — which is exactly the asymmetry that produces surprise cloud bills.</p>
+
+  <h2>What I would do differently</h2>
+
+  <ul>
+    <li><strong>Write the teardown as a playbook too.</strong> If creation is automated and destruction is manual, destruction is the step that gets skipped.</li>
+    <li><strong>Move credentials out of environment variables.</strong> Exported variables do not survive a reboot, which I discovered partway through. A profile or a vault is the better answer; sourcing a script is a course-exercise convenience, not a practice.</li>
+    <li><strong>Use purpose-built modules over the command module by default</strong>, so the changed state means something.</li>
+    <li><strong>Set the adapter mode deliberately at build time</strong> rather than accepting autodetect, which is what caused the subnet split in the first place.</li>
+  </ul>
+
+  <p class="note">Coursework completed for Cloud Management Platforms, Full Sail University, September 2026. Both virtual machines were local; AWS resources were created in a personal student account and terminated at the end of each exercise. Account identifiers, key material and credentials are deliberately omitted from this writeup.</p>
+
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>&copy; 2026 Abner D. Martinez</span>
+    <span><a href="../index.html">Back to all work</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

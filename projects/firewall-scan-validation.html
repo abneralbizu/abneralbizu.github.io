@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Measuring what a host firewall buys you — Abner Martinez</title>
+<meta name="description" content="Scanning the same host with the firewall off and then on with a scoped rule, and recording the measured difference rather than assuming it.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Abner Martinez</a>
+    <nav class="site-nav">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article>
+
+  <p class="eyebrow">Academic project &middot; Threat Protection and Testing &middot; March 2026</p>
+  <h1>Measuring what a host firewall actually buys you</h1>
+  <p class="summary">Everyone says to turn the host firewall on. This was an attempt to say how much it is worth, by scanning the same machine twice — once exposed, once with the firewall enabled and a scoped rule in place — and recording the difference.</p>
+
+  <ul class="meta">
+    <li>Tenable Nessus</li>
+    <li>Windows Firewall</li>
+    <li>CVSS</li>
+    <li>SMB</li>
+    <li>Windows 7 target</li>
+  </ul>
+
+  <h2>The test</h2>
+
+  <p>The target was a Windows 7 virtual machine — chosen because a legacy, unpatched host produces enough findings to make a before-and-after comparison meaningful. Two scans against the same machine, changing exactly one variable between them.</p>
+
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Severity</th><th>Firewall off</th><th>Firewall on, scoped rule</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Critical</td><td class="num">2</td><td class="num">0</td></tr>
+      <tr><td>High</td><td class="num">5</td><td class="num">0</td></tr>
+      <tr><td>Medium</td><td class="num">10</td><td class="num">0</td></tr>
+      <tr><td>Low</td><td class="num">2</td><td class="num">0</td></tr>
+      <tr><td>Informational</td><td class="num">46</td><td class="num">4</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Nineteen actionable findings spanning the CVSS range down to four informational items. The SMB vulnerabilities that drove the Critical and High counts were confirmed absent on the rescan.</p>
+
+  <h2>What the numbers do and do not mean</h2>
+
+  <p>This is the part that matters more than the table.</p>
+
+  <p><strong>The machine did not get patched.</strong> Not one vulnerability was fixed between the two scans. Every flaw present in the first scan is still present in the second — the same unpatched SMB implementation, the same missing updates, the same exploitable services. What changed is that a network-based scanner can no longer reach them.</p>
+
+  <p>So the honest reading of the second scan is not "this host is secure." It is "this host is no longer remotely enumerable from where the scanner was standing." Those are different claims, and conflating them is how a clean scan report becomes a false sense of safety. Anything that gets past the perimeter — a phished credential, a laptop brought back onto the network, a lateral move from a host that <em>is</em> reachable — finds the same unpatched machine waiting.</p>
+
+  <p>The other thing the comparison shows is how much a scanner depends on its vantage point. The same host, the same scanner, the same moment in time, produces a nineteen-finding report or a four-item report depending entirely on what sits between them. That is worth remembering whenever someone presents a scan as a statement of fact about a system rather than a statement about a path to it.</p>
+
+  <div class="callout">
+    <p><strong>Where this connects to real practice.</strong> This is the same mechanism behind the scan-enablement work in my <a href="vulnerability-management-program.html">vulnerability management project</a> — a credentialed scan cannot authenticate to a host whose firewall is blocking SMB and Remote Registry, which is why those services get opened for a scan window.</p>
+    <p>Seeing both sides of it in the same term was useful: the firewall that makes your security report look good is the same firewall that makes your credentialed scan fail. The answer in production is a rule scoped to the scanner's source address, not a disabled profile.</p>
+  </div>
+
+  <h2>Triage methodology</h2>
+
+  <p>Alongside the scanning I worked out a severity-triage approach against a deliberately vulnerable web application, because a raw CVSS score is not a priority order on its own. The questions that actually move something up or down the list:</p>
+
+  <ul>
+    <li>Does it permit <strong>remote code execution</strong>, or something less severe?</li>
+    <li>What is the <strong>attack vector</strong> — network, adjacent, local, physical?</li>
+    <li>Is <strong>authentication required</strong>, and at what privilege level?</li>
+    <li>Is there a <strong>public proof of concept</strong>?</li>
+    <li>Is it under <strong>active exploitation</strong> in the wild?</li>
+    <li>Has the <strong>vendor confirmed</strong> it, and is there a patch?</li>
+  </ul>
+
+  <p>Mapped against CVSS bands, that produces an order you can defend to someone asking why item four is being fixed before item two. A network-reachable, unauthenticated RCE with a public exploit outranks a higher-scoring local privilege escalation that requires an existing foothold.</p>
+
+  <h2>What I would do differently</h2>
+
+  <ul>
+    <li><strong>Add a third scan: credentialed, firewall on.</strong> Two scans show the network view with and without a barrier. A credentialed scan through the firewall would show what is actually installed on the box, which is the view that survives the "but it looked clean" conversation.</li>
+    <li><strong>Scope the rule to a source address rather than a blanket allow</strong>, and document the revert, so the test mirrors what production would do.</li>
+    <li><strong>Capture the specific CVEs</strong> behind the Critical and High findings rather than the counts alone. Counts show the delta; CVEs show whether the right things went away.</li>
+    <li><strong>Test from a second vantage point</strong> — same subnet versus across the router — to show how much of the result is the firewall and how much is the network path.</li>
+  </ul>
+
+  <p class="note">Coursework completed for Threat Protection and Testing, Full Sail University, March 2026. All scanning was performed against isolated lab virtual machines I controlled.</p>
+
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>&copy; 2026 Abner D. Martinez</span>
+    <span><a href="../index.html">Back to all work</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

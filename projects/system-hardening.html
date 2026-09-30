@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hardening a server and proving it worked — Abner Martinez</title>
+<meta name="description" content="Taking a server from 46 Critical and 48 High findings to a single Medium, validated by rescan, plus web application and TLS review.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Abner Martinez</a>
+    <nav class="site-nav">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article>
+
+  <p class="eyebrow">Academic project &middot; Securing Systems and Data &middot; 2026</p>
+  <h1>Hardening a server and proving it worked</h1>
+  <p class="summary">A neglected server carrying 46 Critical and 48 High findings, brought down to a single Medium and verified by rescan — followed by the argument that a lower number is not the same thing as a secure system.</p>
+
+  <ul class="meta">
+    <li>Tenable Nessus</li>
+    <li>OWASP ZAP</li>
+    <li>Patch management</li>
+    <li>TLS / certificate analysis</li>
+    <li>FTP</li>
+  </ul>
+
+  <h2>Before and after</h2>
+
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Severity</th><th>Initial scan</th><th>After patching</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Critical</td><td class="num">46</td><td class="num">0</td></tr>
+      <tr><td>High</td><td class="num">48</td><td class="num">0</td></tr>
+      <tr><td>Medium</td><td class="num">&mdash;</td><td class="num">1</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Ninety-four Critical and High findings on a single host. That number is what an unpatched server looks like after it has been left alone long enough, and it is not unusual — it is what the estate looks like anywhere patching has quietly stopped happening.</p>
+
+  <p>The remediation was patching, and the verification was a rescan rather than an assumption. That second part is the habit worth having: the remediation step is where the work happens, but the rescan is the only thing that turns "I applied the updates" into evidence.</p>
+
+  <h2>Why a smaller number is not the same as secure</h2>
+
+  <p>This was the part of the assignment I found most worth writing about, and it is the same argument as the one in my <a href="firewall-scan-validation.html">firewall measurement project</a>, arrived at from the other direction.</p>
+
+  <p>Going from ninety-four findings to one is a real improvement — those were real vulnerabilities and they are really gone. But a scan report is a measurement of what one tool, from one vantage point, with one plugin set, could observe at one moment. Several things it cannot tell you:</p>
+
+  <ul>
+    <li><strong>Whether the configuration is sound.</strong> A fully patched server with weak permissions, default accounts, or unnecessary services exposed will scan clean and still fall over. Patch level and hardening are different axes.</li>
+    <li><strong>Whether anything is already wrong.</strong> A vulnerability scan is not a compromise assessment. Patching a host that was exploited last month closes the door and leaves whatever came through it inside.</li>
+    <li><strong>What it could not see.</strong> Coverage gaps, plugins that did not fire, services that were not running during the scan window — all of it reads as absence of findings.</li>
+    <li><strong>How long it stays true.</strong> One is the count as of the scan date. Next Tuesday's advisories are already being written.</li>
+  </ul>
+
+  <p>So the defensible statement is narrow: as of this scan, with this tool, from this position, these specific known vulnerabilities are no longer detected on this host. That is genuinely worth reporting. It is just not the same sentence as "the server is secure," and the gap between those two sentences is where a lot of bad security reporting lives.</p>
+
+  <h2>Beyond the operating system</h2>
+
+  <p>Patching the OS is the first layer. Two others got attention in the same project:</p>
+
+  <p><strong>The web application.</strong> A scan of the e-commerce site running in the same environment returned a High-risk finding — a reminder that a host can be fully patched while the application on top of it is not. Operating system vulnerability management and application security are separate programs that happen to run on the same hardware.</p>
+
+  <p><strong>File exposure and transport.</strong> Reviewing the FTP server's exposed files, and analyzing the SSL certificate configuration, covered the two failure modes that patching never touches — data reachable because nobody set permissions, and traffic readable because the transport was configured badly or the certificate does not do what everyone assumes it does.</p>
+
+  <div class="callout">
+    <p><strong>A control-framework reading of the same environment.</strong> Separately I mapped this environment against the Cloud Security Alliance Cloud Controls Matrix and CAIQ. PCI DSS and ISO/IEC 27001 applied and were being considered; GDPR, NIST SP 800-171 and CMMC were applicable to the business and were not addressed at all.</p>
+    <p>That is a different kind of finding from a CVE, and often a more expensive one. A scanner tells you a host is missing a patch. A controls assessment tells you an entire regulatory obligation has no owner.</p>
+  </div>
+
+  <h2>What I would do differently</h2>
+
+  <ul>
+    <li><strong>Record the specific CVEs, not just the severity counts.</strong> Counts prove a delta; CVEs prove the right things went away and let someone else verify the claim.</li>
+    <li><strong>Run a configuration audit alongside the vulnerability scan</strong> — CIS Benchmark or STIG policy compliance — since that is precisely the axis a patch-level scan does not measure.</li>
+    <li><strong>Investigate the one remaining Medium rather than leaving it at a count.</strong> The finding you accept should be a decision with a reason attached, not a leftover.</li>
+    <li><strong>Establish a recurring scan cadence.</strong> A single before-and-after is a snapshot; vulnerability management is the loop, not the event.</li>
+  </ul>
+
+  <p class="note">Coursework completed for Securing Systems and Data, Full Sail University, 2026. The environment, the company and the e-commerce application are fictional and part of the course scenario. All scanning was performed against isolated lab systems.</p>
+
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>&copy; 2026 Abner D. Martinez</span>
+    <span><a href="../index.html">Back to all work</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
