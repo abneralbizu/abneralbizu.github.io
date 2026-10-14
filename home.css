@@ -264,3 +264,44 @@ html.static .layer, html.static .layer.right { justify-content: center; }
   .nav nav { gap: 16px; font-size: 0.78rem; flex-wrap: nowrap; }
   .nav nav a[href="#layer-1"], .nav nav a[href="#about"] { display: none; }
 }
+
+/* ---------- readability over the 3D scene ---------- */
+.hero .wrap { position: relative; isolation: isolate; }
+.hero .wrap::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  inset: -80px -12vw -60px -12vw;
+  background: radial-gradient(ellipse 62% 58% at 38% 50%, rgba(2, 6, 8, 0.78), rgba(2, 6, 8, 0.5) 55%, transparent 82%);
+}
+html.static .hero .wrap::before { display: none; }
+.hero { overflow-x: hidden; overflow-x: clip; }
+@media (max-width: 760px) { .hero .wrap::before { inset: -40px 0 -40px 0; } }
+.hero h1 { text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55), 0 4px 28px rgba(0, 0, 0, 0.75); }
+.hero h1 em { text-shadow: none; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 22px rgba(0, 0, 0, 0.55)); }
+.kicker, .stats dd { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.8); }
+.lede { color: #c3d2cf; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 18px rgba(0, 0, 0, 0.85); }
+.stats dt { text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8); }
+.creds li { background: rgba(4, 10, 11, 0.8); }
+
+/* rail: a dark capsule so dots and labels hold up against bright light */
+.rail {
+  padding: 14px 9px; border-radius: 999px;
+  background: rgba(4, 10, 11, 0.55); border: 1px solid rgba(23, 209, 172, 0.14);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.rail a { background: rgba(4, 10, 11, 0.7); }
+.rail a.on { background: var(--accent); }
+.rail a.done { background: rgba(23, 209, 172, 0.35); }
+.rail a span {
+  right: 28px; color: var(--ink);
+  background: rgba(4, 10, 11, 0.88); border: 1px solid rgba(23, 209, 172, 0.3);
+  border-radius: 5px; padding: 4px 9px;
+}
+
+/* HUD: below the content layer, on its own backdrop, hidden at the hero and the end */
+.hud {
+  z-index: 3; transition: opacity 0.3s ease;
+  background: rgba(4, 10, 11, 0.62); padding: 9px 14px 9px 12px; border-radius: 0 6px 6px 0;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.hud.idle { opacity: 0; }
+@media (max-height: 700px), (max-width: 1100px) { .hud { display: none; } }

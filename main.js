@@ -5,6 +5,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 const html = document.documentElement;
 
@@ -48,6 +49,8 @@ function setupUI() {
   const setStage = (idx) => {
     const s = STATUS[idx];
     hudLayer.textContent = s[0]; hudZone.textContent = s[1]; hudStatus.textContent = s[2];
+    // The HUD sits over the hero text and the left-hand cards' edges; only show it mid-journey.
+    hudLayer.closest('.hud').classList.toggle('idle', idx === 0 || idx === STATUS.length - 1);
     railLinks.forEach((a) => {
       const i = +a.dataset.i;
       a.classList.toggle('on', i === idx);
@@ -135,10 +138,10 @@ function initScene() {
     void main() {
       vec4 mv = modelViewMatrix * vec4(position, 1.0);
       float tw = 0.72 + 0.28 * sin(uTime * 1.7 + aPhase);
-      gl_PointSize = aSize * uPR * tw * (260.0 / max(1.0, -mv.z));
+      gl_PointSize = min(aSize * uPR * tw * (260.0 / max(1.0, -mv.z)), 40.0 * uPR);
       gl_Position = projectionMatrix * mv;
       vColor = aColor;
-      vAlpha = smoothstep(150.0, 20.0, -mv.z) * smoothstep(0.4, 3.0, -mv.z);
+      vAlpha = smoothstep(150.0, 20.0, -mv.z) * smoothstep(1.5, 6.0, -mv.z);
     }`;
   const pointFrag = /* glsl */`
     varying vec3 vColor; varying float vAlpha;
@@ -198,11 +201,14 @@ function initScene() {
     g.fillStyle = grad; g.fillRect(0, 0, 128, 128);
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
   })();
+  const glows = [];
   const glow = (color, scale, opacity = 1) => {
     const s = new THREE.Sprite(new THREE.SpriteMaterial({
       map: glowTex, color, transparent: true, opacity, depthWrite: false, blending: THREE.AdditiveBlending,
     }));
-    s.scale.setScalar(scale); return s;
+    s.scale.setScalar(scale);
+    s.userData.base = opacity; s.userData.size = scale; glows.push(s);
+    return s;
   };
 
   /* ---------------- atmosphere ---------------- */
@@ -637,7 +643,14 @@ function initScene() {
     composer.setPixelRatio(pixelRatio);
     composer.setSize(innerWidth, innerHeight);
     composer.addPass(new RenderPass(scene, camera));
-    bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 1.05, 0.55, 0.06);
+    // Stacked additive layers can exceed 1.0 (or overflow) in the half-float buffer on some
+    // GPUs, and bloom then smears that across the whole screen. Clamp before blooming.
+    composer.addPass(new ShaderPass({
+      uniforms: { tDiffuse: { value: null } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: 'uniform sampler2D tDiffuse; varying vec2 vUv; void main(){ vec4 c = texture2D(tDiffuse, vUv); if (!(c.r >= 0.0 && c.g >= 0.0 && c.b >= 0.0)) c.rgb = vec3(0.0); gl_FragColor = vec4(min(c.rgb, vec3(0.92)), 1.0); }',
+    }));
+    bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.8, 0.42, 0.22);
     composer.addPass(bloom);
     composer.addPass(new OutputPass());
   }
@@ -722,6 +735,11 @@ function initScene() {
       .addScaledVector(F.rt, par.x * 0.9).addScaledVector(F.up, par.y * 0.5);
     camera.lookAt(P(tCur + 0.035).addScaledVector(F.rt, par.x * 0.4));
     haze.position.copy(camera.position);
+    for (const s of glows) {
+      s.getWorldPosition(tmpP);
+      const k = s.userData.size;
+      s.material.opacity = s.userData.base * THREE.MathUtils.smoothstep(tmpP.distanceTo(camera.position), k * 0.6, k * 1.8);
+    }
 
     // Packet + its trail.
     const pk = P(tCur + 0.016);
