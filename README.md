@@ -1,27 +1,39 @@
 # abnermartinez.dev — portfolio site source
 
-Static HTML and CSS. No build step, no dependencies, no JavaScript. Every file
-deploys exactly as it sits here.
+Static HTML, CSS and JavaScript. No build step. Every file deploys exactly as
+it sits here.
 
 ## Structure
 
 ```
-index.html                 home — intro, project list, skills, background, contact
-style.css                  all styling (light and dark, responsive)
-.nojekyll                  tells GitHub Pages to serve files as-is
-projects/
-  vulnerability-management-program.html
-  hypervisor-lab.html
-  ansible-aws-automation.html
-  firewall-scan-validation.html
-  system-hardening.html
-  incident-report.html
+index.html          home — the 3D packet journey; all text is real HTML
+home.css            home page styles (3D mode + static/reduced-motion mode)
+main.js             the Three.js scene: route, gates, threats, packet, vault
+favicon.svg
+img/abner.jpg       headshot
+img/og.jpg          link-preview image for LinkedIn and messaging apps
+img/work/           redacted screenshots used on the writeup pages
+downloads/          redacted coursework PDFs linked from the writeup pages
+vendor/             Three.js r170 + bloom post-processing, pinned and self-hosted
+style.css           styles for the six project writeup pages
+.nojekyll           tells GitHub Pages to serve files as-is
+projects/           the six full writeups each layer links to
 ```
+
+## How the home page behaves
+
+- Scrolling moves a camera along a fixed route; each of the seven layer
+  sections maps to one gate on that route (STATIONS in main.js).
+- Visitors with "reduce motion" turned on, or a browser without WebGL, get a
+  static layout with the same content, decided before first paint.
+- Phones and low-core devices get fewer particles and no bloom. If a device
+  can't hold frame rate, bloom and resolution drop automatically after ~2s.
+- "Skip to projects" is the first focusable element on the page.
 
 ## Previewing locally
 
-Open `index.html` in a browser. That's it. If you want proper relative-path
-behavior, run a local server from this folder instead:
+The home page uses JavaScript modules, so it must be served over http.
+Opening index.html directly as a file won't load the 3D scene. From this folder:
 
 ```
 python3 -m http.server 8000
@@ -85,5 +97,10 @@ These are deliberate. Keep them.
    work product behind it.
 4. **Group work is labeled as group work**, with the individual contribution
    stated.
-5. **Every "What I would do differently" section is real.** It is the most
+5. **Downloads and screenshots are redacted before they go in.** Every PDF in
+   `downloads/` is rebuilt as page images (no text layer, no metadata) with lab
+   addresses, hostnames, usernames, credentials and contact details blacked
+   out, and checked with OCR afterward. Never drop an original assignment file
+   into this folder.
+6. **Every "What I would do differently" section is real.** It is the most
    credible part of each page and the part interviewers respond to.

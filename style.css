@@ -420,3 +420,23 @@ td.good { color: var(--accent-ink); font-weight: 600; }
   section { padding-block: 54px; }
   .metrics div { padding: 18px 18px 22px 0; }
 }
+
+/* ---- evidence: figures and downloads ---- */
+.figure { margin: 34px 0 38px; }
+.figure img { width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface-alt); }
+.figure figcaption { margin-top: 10px; font-size: .86rem; line-height: 1.5; color: var(--ink-soft); max-width: var(--measure); }
+.figure-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.figure-pair .label { display: block; margin-bottom: 6px; font-family: var(--mono); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); }
+.figure.doc a { display: block; max-width: 460px; }
+.figure.doc img { box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+@media (max-width: 640px) { .figure-pair { grid-template-columns: 1fr; } }
+
+.download { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 20px;
+  margin: 0 0 48px; padding: 16px 18px; border: 1px solid var(--rule); border-left: 3px solid var(--accent-ink);
+  border-radius: 6px; background: var(--accent-wash); }
+.download p { margin: 0; }
+.download .what { font-weight: 600; color: var(--ink); }
+.download .fine { margin-top: 3px; font-size: .84rem; color: var(--ink-soft); }
+.download .btn { flex: none; font-family: var(--mono); font-size: .82rem; padding: 9px 14px; border-radius: 4px;
+  background: var(--ink); color: var(--bg); text-decoration: none; }
+.download .btn:hover, .download .btn:focus-visible { background: var(--accent-ink); color: #fff; }

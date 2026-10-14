@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Measuring what a host firewall buys you — Abner Martinez</title>
 <meta name="description" content="Scanning the same host with the firewall off and then on with a scoped rule, and recording the measured difference rather than assuming it.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -39,6 +40,13 @@
 
 <main class="wrap narrow">
 <article>
+  <div class="download">
+    <div>
+      <p class="what">The original lab report, redacted</p>
+      <p class="fine">4 pages: both Nessus scans, the custom firewall rule and the SMB rescan. Lab addresses, hostnames and usernames removed.</p>
+    </div>
+    <a class="btn" href="../downloads/tpt-firewall-scan-validation.pdf" download>Download PDF &middot; 0.4&nbsp;MB</a>
+  </div>
   <h2>The test</h2>
 
   <p>The target was a Windows 7 virtual machine — chosen because a legacy, unpatched host produces enough findings to make a before-and-after comparison meaningful. Two scans against the same machine, changing exactly one variable between them.</p>
@@ -59,6 +67,14 @@
   </div>
 
   <p>Nineteen actionable findings spanning the CVSS range down to four informational items. The SMB vulnerabilities that drove the Critical and High counts were confirmed absent on the rescan.</p>
+
+  <figure class="figure">
+    <div class="figure-pair">
+      <div><span class="label">Firewall off</span><img src="../img/work/tpt-firewall-off.jpg" width="966" height="456" alt="Nessus host summary for the Windows 7 VM with the firewall off, showing Critical, High, Medium and Low findings" loading="lazy"></div>
+      <div><span class="label">Firewall on</span><img src="../img/work/tpt-firewall-on.jpg" width="968" height="457" alt="Nessus host summary for the same VM with the firewall on, showing only informational findings" loading="lazy"></div>
+    </div>
+    <figcaption>The two Nessus scans of the same Windows 7 VM, from the lab report. Lab addresses and usernames are blacked out.</figcaption>
+  </figure>
 
   <h2>What the numbers do and do not mean</h2>
 

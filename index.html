@@ -3,171 +3,222 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Abner Martinez — Systems, Virtualization and Security</title>
-<meta name="description" content="Systems administration and security work by Abner Martinez: virtualization, Linux and Windows server administration, vulnerability management, and governance documentation.">
-<link rel="stylesheet" href="style.css">
+<title>Abner Martinez — Systems &amp; Security Portfolio</title>
+<meta name="description" content="Follow a data packet through seven layers of defense. Systems administration and cybersecurity lab work by Abner Martinez — vulnerability management, hardening, segmentation, identity, automation and incident reporting.">
+<meta name="theme-color" content="#04080a">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Abner Martinez — Systems & Security Portfolio">
+<meta property="og:description" content="Follow a data packet through seven layers of defense, each one a real project.">
+<meta property="og:image" content="https://abneralbizu.github.io/img/og.jpg">
+<meta property="og:url" content="https://abneralbizu.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="home.css">
+<script>
+  // Decide static vs 3D before first paint, so reduced-motion users never see a flash.
+  (function () {
+    var d = document.documentElement;
+    var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var gl = false;
+    try { var c = document.createElement('canvas'); gl = !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) {}
+    d.classList.add(reduced || !gl ? 'static' : 'immersive');
+  })();
+</script>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/" } }
+</script>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="wrap">
-    <a class="brand" href="index.html"><span class="dot"></span>ABNER MARTINEZ</a>
-    <nav>
-      <a href="#work">work</a>
-      <a href="#about">about</a>
-      <a href="#skills">skills</a>
-      <a href="#contact">contact</a>
-    </nav>
-  </div>
-</div>
+<a class="skip" href="#work">Skip to projects</a>
 
-<header class="hero">
-  <div class="wrap">
-    <p class="kicker">Systems &middot; Virtualization &middot; Security Operations</p>
-    <h1>I build the environment, then I <em>break it on purpose</em>.</h1>
-    <p class="lede">U.S. Army veteran, CompTIA Security+ certified, working in IT support on contract while finishing a second degree. Below is the lab work behind that &mdash; what I built, what I found, and the parts that went wrong.</p>
-    <ul class="creds">
-      <li>CompTIA Security+ ce</li>
-      <li>DoD 8140 IAT Level II</li>
-      <li>B.S. Cybersecurity</li>
-      <li>U.S. Army Veteran</li>
-      <li>English / Español</li>
-    </ul>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div id="tip" class="tip" aria-hidden="true"></div>
 
-    <div class="metrics">
-      <div><span class="n">43</span><span class="l">tickets worked</span></div>
-      <div><span class="n">94&rarr;1</span><span class="l">findings remediated</span></div>
-      <div><span class="n">10</span><span class="l">host lab built</span></div>
-      <div><span class="n">3</span><span class="l">hypervisors compared</span></div>
-    </div>
-  </div>
+<header class="nav">
+  <a class="brand" href="#top"><span class="pulse"></span>ABNER MARTINEZ</a>
+  <nav aria-label="Primary">
+    <a href="#layer-1">journey</a>
+    <a href="#work">work</a>
+    <a href="#about">about</a>
+    <a href="#contact">contact</a>
+  </nav>
 </header>
+
+<aside class="hud" aria-hidden="true">
+  <div class="hud-line"><span class="hud-k">PACKET</span><span class="hud-v">0x7F3A</span></div>
+  <div class="hud-line"><span class="hud-k">LAYER</span><span class="hud-v" id="hud-layer">00 / 07</span></div>
+  <div class="hud-line"><span class="hud-k">ZONE</span><span class="hud-v" id="hud-zone">INGRESS</span></div>
+  <div class="hud-line"><span class="hud-k">STATUS</span><span class="hud-v ok" id="hud-status">IN TRANSIT</span></div>
+</aside>
+
+<nav class="rail" aria-label="Journey layers">
+  <a href="#layer-1" data-i="1"><span>Reconnaissance</span></a>
+  <a href="#layer-2" data-i="2"><span>Perimeter</span></a>
+  <a href="#layer-3" data-i="3"><span>Segmentation</span></a>
+  <a href="#layer-4" data-i="4"><span>Endpoint</span></a>
+  <a href="#layer-5" data-i="5"><span>Identity</span></a>
+  <a href="#layer-6" data-i="6"><span>Automation</span></a>
+  <a href="#layer-7" data-i="7"><span>Response</span></a>
+</nav>
 
 <main>
 
-  <section id="work">
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top" data-zone="INGRESS">
     <div class="wrap">
-      <div class="sec-head"><h2>Selected work</h2></div>
-      <div class="cards">
-
-        <a class="card" href="projects/vulnerability-management-program.html">
-          <span class="idx">01</span>
-          <h3>Vulnerability management across a ten-host enterprise lab</h3>
-          <div>
-            <p>Built and scanned a two-site environment &mdash; domain controllers, mail, web, firewall, scanner &mdash; then worked every finding through a ticketed remediation process with evidence at each step.</p>
-            <span class="stat">43 tickets &middot; 22 closed &middot; 2 sites</span>
-            <div class="tags"><span>Nessus</span><span>Proxmox VE</span><span>OPNsense</span><span>Nmap</span><span>Windows Server</span><span>Rocky Linux</span></div>
-          </div>
-        </a>
-
-        <a class="card" href="projects/hypervisor-lab.html">
-          <span class="idx">02</span>
-          <h3>Three hypervisors, one lab: Fusion, UTM/QEMU, and Proxmox</h3>
-          <div>
-            <p>Built the same Linux guests on three platforms to compare them honestly &mdash; and spent most of the time tracing a network failure that the interface reported as a success.</p>
-            <span class="stat">4 guests &middot; 3 platforms &middot; 1 silent failure</span>
-            <div class="tags"><span>VMware Fusion</span><span>UTM / QEMU</span><span>Proxmox VE</span><span>Apple Silicon</span></div>
-          </div>
-        </a>
-
-        <a class="card" href="projects/ansible-aws-automation.html">
-          <span class="idx">03</span>
-          <h3>Agentless automation: Ansible from bare VM to cloud instance</h3>
-          <div>
-            <p>Stood up a control node and a managed node, moved from password prompts to key-based authentication, then pushed the same approach out to AWS and provisioned an instance from a playbook.</p>
-            <span class="stat">2 nodes &middot; 0 agents &middot; 1 playbook</span>
-            <div class="tags"><span>Ansible</span><span>Fedora</span><span>Ubuntu Server</span><span>AWS EC2</span><span>IAM</span><span>SSH</span></div>
-          </div>
-        </a>
-
-        <a class="card" href="projects/firewall-scan-validation.html">
-          <span class="idx">04</span>
-          <h3>Measuring what a host firewall actually buys you</h3>
-          <div>
-            <p>Scanned the same host twice &mdash; firewall off, then firewall on with a scoped rule &mdash; and recorded the difference instead of assuming it.</p>
-            <span class="stat">19 findings &rarr; 0 &middot; same unpatched host</span>
-            <div class="tags"><span>Nessus</span><span>Windows Firewall</span><span>CVSS</span><span>SMB</span></div>
-          </div>
-        </a>
-
-        <a class="card" href="projects/system-hardening.html">
-          <span class="idx">05</span>
-          <h3>Hardening a server and proving it worked</h3>
-          <div>
-            <p>Took a neglected server from 46 Critical and 48 High findings down to a single Medium, validated by rescan &mdash; then argued why a lower number is not the same thing as a secure system.</p>
-            <span class="stat">94 Critical + High &rarr; 1 Medium</span>
-            <div class="tags"><span>Nessus</span><span>OWASP ZAP</span><span>Patch management</span><span>TLS</span></div>
-          </div>
-        </a>
-
-        <a class="card" href="projects/incident-report.html">
-          <span class="idx">06</span>
-          <h3>Writing the incident report, not just finding the bug</h3>
-          <div>
-            <p>A full access-control incident written the way an organization actually consumes one: scope, timeline, risk statement, stakeholders, and a remediation position someone can act on.</p>
-            <span class="stat">~6 months undetected exposure</span>
-            <div class="tags"><span>Incident response</span><span>Access control</span><span>BSIMM</span><span>Technical writing</span></div>
-          </div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="alt">
-    <div class="wrap">
-      <div class="sec-head"><h2>About</h2></div>
-      <div class="about-grid">
-        <img src="img/abner.jpg" alt="Abner Martinez" width="200" height="200">
-        <div>
-          <p>I spent four years in the U.S. Army as a Human Resources Specialist at Fort Bragg, where the work was records accuracy and regulatory compliance at scale &mdash; auditing personnel records against Army requirements, running inspections from Group to Battalion level, writing the standing procedures that governed recurring operations, and briefing what I found to the Company Commander and First Sergeant.</p>
-          <p>That turns out to be most of what security governance is: check the thing against the standard, document what you found, tell someone who can act on it, and write the procedure so the next person does it the same way. The technology was new to me. The discipline was not.</p>
-          <p>I hold a B.S. in Cybersecurity and an A.S. in Information Technology from Full Sail University, and I am completing a second bachelor's in Information Technology &mdash; the virtualization, cloud automation and database work on this site comes from that program. I work as an IT and technology support specialist on contract, and I read, write and speak English and Spanish fluently.</p>
-          <p><strong>Every project here is academic and lab work</strong>, and it is labeled that way on each page. None of it was performed for a commercial client. What it shows is the work itself: the environments I built, the scans I ran, the findings I acted on, and the reasoning behind each decision.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="skills">
-    <div class="wrap">
-      <div class="sec-head"><h2>Skills</h2></div>
-      <dl class="skills">
-        <div>
-          <dt>Linux administration</dt>
-          <dd>Rocky Linux, Ubuntu Server and Desktop, Fedora, Debian, Kali. Installation and partitioning, LVM, package management across dnf and apt, systemd service administration, SELinux contexts and file ownership, OpenSSH and key-based authentication, Apache virtual hosts, Samba file services.</dd>
-
-          <dt>Windows administration</dt>
-          <dd>Windows Server 2019, 2016 and 2008 R2; Windows 11, 10 and 7. Active Directory, DNS, DHCP, IIS, domain joins, NTFS and share permissions, host firewall configuration, PowerShell, Microsoft 365 administration.</dd>
-
-          <dt>Virtualization and containers</dt>
-          <dd>VMware Fusion, Proxmox VE, UTM/QEMU. VM provisioning, guest OS installation, virtual networking across bridged, NAT and host-only modes, clones and snapshots, cold and live migration, virtual storage. Docker and Docker Compose.</dd>
-
-          <dt>Cloud</dt>
-          <dd>AWS &mdash; IAM users, groups and scoped policies, EC2, S3 static hosting, EFS over NFS, AWS CLI. Microsoft Azure &mdash; virtual networks, subnets, network security groups, load balancing.</dd>
-        </div>
-        <div>
-          <dt>Automation and scripting</dt>
-          <dd>Ansible inventories, ad-hoc modules and playbooks including the amazon.aws collection. Bash and Linux CLI, PowerShell, Python.</dd>
-
-          <dt>Security and compliance</dt>
-          <dd>Tenable Nessus credentialed and non-credentialed scanning, Nmap, OWASP ZAP, CVSS triage, OS hardening and remediation validation. CIS Controls v8 and CIS Benchmarks, DISA STIGs, SCAP/OVAL, NIST SP 800-53, PCI DSS v4.0.1, ISO/IEC 27001, HIPAA Security Rule.</dd>
-
-          <dt>Networking</dt>
-          <dd>TCP/IP, subnetting and addressing schemes, VLANs, DNS and DHCP, NFS, Cisco router and switch configuration, site-to-site IPsec VPN, OPNsense firewall, Wireshark.</dd>
-
-          <dt>Documentation</dt>
-          <dd>Policy, standard and procedure authoring. Incident reporting, remediation tickets with evidence, runbooks and standing operating procedures, control gap analysis.</dd>
-        </div>
+      <p class="kicker">Systems &middot; Virtualization &middot; Security Operations</p>
+      <h1>I build the environment, then I <em>break it on purpose</em>.</h1>
+      <p class="lede">U.S. Army veteran and CompTIA Security+ certified, working in IT support on contract while finishing a second degree. Scroll to follow a single data packet through seven layers of defense &mdash; each one is a real project I built, broke, and documented.</p>
+      <ul class="creds">
+        <li>CompTIA Security+ ce</li>
+        <li>DoD 8140 IAT Level II</li>
+        <li>B.S. Cybersecurity</li>
+        <li>U.S. Army Veteran</li>
+        <li>English / Espa&ntilde;ol</li>
+      </ul>
+      <dl class="stats">
+        <div><dt>43</dt><dd>tickets worked</dd></div>
+        <div><dt>94&rarr;1</dt><dd>findings remediated</dd></div>
+        <div><dt>10</dt><dd>host lab built</dd></div>
+        <div><dt>3</dt><dd>hypervisors compared</dd></div>
       </dl>
+      <div class="hero-actions">
+        <a class="btn primary" href="#layer-1">Follow the packet &darr;</a>
+        <a class="btn" href="#work">Go straight to the work</a>
+      </div>
     </div>
   </section>
 
-  <section id="contact" class="alt">
+  <!-- ================= LAYER 1 ================= -->
+  <section class="layer left" id="layer-1" data-zone="OPEN INTERNET" data-i="1">
+    <article class="card">
+      <p class="tag"><span>Layer 01</span> Reconnaissance &mdash; the open internet</p>
+      <h2>Seeing the network the way an attacker does</h2>
+      <p>A two-site, ten-host enterprise lab, scanned first with no credentials &mdash; the view an outsider gets &mdash; then again with credentials to see what was actually installed. Every finding went into a ticket with numbered remediation steps and screenshot evidence.</p>
+      <div class="metric"><strong>43</strong><span>tickets worked &middot; 22 closed with documented remediation</span></div>
+      <ul class="chips"><li>Tenable Nessus</li><li>Nmap</li><li>Proxmox VE</li><li>Kali Linux</li></ul>
+      <p class="links"><a href="projects/vulnerability-management-program.html">Read the writeup &rarr;</a></p>
+      <p class="src">Academic lab &middot; Full Sail University &middot; Project &amp; Portfolio VII, July 2026</p>
+    </article>
+  </section>
+
+  <!-- ================= LAYER 2 ================= -->
+  <section class="layer right" id="layer-2" data-zone="PERIMETER" data-i="2">
+    <article class="card">
+      <p class="tag"><span>Layer 02</span> Perimeter &mdash; the firewall</p>
+      <h2>Measuring what a host firewall actually buys you</h2>
+      <p>The same host, scanned twice: firewall off, then on with a scoped rule. The findings dropped &mdash; but nothing was patched. The host was made unreachable, not secure, and that difference is the whole point.</p>
+      <div class="metric"><strong>19&rarr;4</strong><span>actionable findings reduced to informational</span></div>
+      <ul class="chips"><li>Tenable Nessus</li><li>Windows Firewall</li><li>CVSS triage</li></ul>
+      <p class="links"><a href="projects/firewall-scan-validation.html">Read the writeup &rarr;</a></p>
+      <p class="src">Academic lab &middot; Full Sail University &middot; Threat Protection and Testing, March 2026</p>
+    </article>
+  </section>
+
+  <!-- ================= LAYER 3 ================= -->
+  <section class="layer left" id="layer-3" data-zone="SEGMENTATION" data-i="3">
+    <article class="card">
+      <p class="tag"><span>Layer 03</span> Segmentation &mdash; divided zones</p>
+      <h2>A two-site network, built to be divided</h2>
+      <p>An OPNsense perimeter firewall routing between two sites, Windows Server domain controllers, Linux servers and workstations on separate subnets. In separate networking coursework: site-to-site IPsec VPN across Cisco routers and VLAN-segmented network designs.</p>
+      <div class="metric"><strong>10</strong><span>hosts across 2 routed sites</span></div>
+      <ul class="chips"><li>Proxmox VE</li><li>OPNsense</li><li>Windows Server</li><li>Rocky Linux</li><li>Cisco IOS</li></ul>
+      <p class="links"><a href="projects/vulnerability-management-program.html#the-environment">See the environment &rarr;</a></p>
+      <p class="src">Academic lab &middot; Full Sail University &middot; Project &amp; Portfolio VII and networking coursework</p>
+    </article>
+  </section>
+
+  <!-- ================= LAYER 4 ================= -->
+  <section class="layer right" id="layer-4" data-zone="ENDPOINT" data-i="4">
+    <article class="card">
+      <p class="tag"><span>Layer 04</span> Endpoint &mdash; the hardened host</p>
+      <h2>Hardening a server &mdash; and proving it worked</h2>
+      <p>A neglected server taken from 94 Critical and High findings to a single Medium, verified by rescan rather than assumed. Then the harder argument: a lower number is not the same thing as a secure system.</p>
+      <div class="metric"><strong>94&rarr;1</strong><span>46 Critical + 48 High reduced to 1 Medium</span></div>
+      <ul class="chips"><li>Tenable Nessus</li><li>OWASP ZAP</li><li>Patch management</li><li>TLS analysis</li></ul>
+      <p class="links"><a href="projects/system-hardening.html">Read the writeup &rarr;</a></p>
+      <p class="src">Academic lab &middot; Full Sail University &middot; Securing Systems and Data</p>
+    </article>
+  </section>
+
+  <!-- ================= LAYER 5 ================= -->
+  <section class="layer left" id="layer-5" data-zone="IDENTITY" data-i="5">
+    <article class="card">
+      <p class="tag"><span>Layer 05</span> Identity &amp; access &mdash; the gate</p>
+      <h2>Only the right keys open the gate</h2>
+      <p>Active Directory and LDAP directory integration, NTFS and share permissions, SSH key-based authentication in place of passwords, and AWS IAM groups with scoped policies &mdash; so access is inherited from a role, never attached to a person.</p>
+      <div class="metric"><strong>Keys</strong><span>not passwords &middot; roles, not individuals</span></div>
+      <ul class="chips"><li>Active Directory</li><li>LDAP</li><li>OpenSSH</li><li>AWS IAM</li></ul>
+      <p class="links"><a href="projects/ansible-aws-automation.html">Read the writeup &rarr;</a></p>
+      <p class="src">Academic lab &middot; Full Sail University &middot; Application Servers and Cloud Management Platforms coursework</p>
+    </article>
+  </section>
+
+  <!-- ================= LAYER 6 ================= -->
+  <section class="layer right" id="layer-6" data-zone="AUTOMATION" data-i="6">
+    <article class="card">
+      <p class="tag"><span>Layer 06</span> Automation &amp; infrastructure</p>
+      <h2>Infrastructure that builds itself &mdash; and the failure that taught the most</h2>
+      <p>Ansible playbooks provisioning AWS EC2 instances from a Fedora control node. And the same Linux guests built on three hypervisors &mdash; including a VMware Fusion network failure that the interface reported as a success, traced into its configuration files.</p>
+      <div class="metric"><strong>3</strong><span>hypervisors compared &middot; 0 agents installed</span></div>
+      <ul class="chips"><li>Ansible</li><li>AWS EC2</li><li>VMware Fusion</li><li>UTM / QEMU</li><li>Proxmox VE</li></ul>
+      <p class="links"><a href="projects/ansible-aws-automation.html">Ansible &amp; AWS &rarr;</a><a href="projects/hypervisor-lab.html">Hypervisor lab &rarr;</a></p>
+      <p class="src">Academic lab &middot; Full Sail University &middot; Cloud Management Platforms and Virtualization Technologies, 2026</p>
+    </article>
+  </section>
+
+  <!-- ================= LAYER 7 ================= -->
+  <section class="layer left" id="layer-7" data-zone="CORE" data-i="7">
+    <article class="card">
+      <p class="tag"><span>Layer 07</span> Response &mdash; the protected core</p>
+      <h2>Writing the incident report, not just finding the bug</h2>
+      <p>A full access-control incident written the way an organization actually uses one &mdash; scope, timeline, risk statement, named stakeholders, and remediation with urgency attached. Then the program-level question: why it happened at all.</p>
+      <div class="metric"><strong>~6 mo</strong><span>of exposure that went undetected</span></div>
+      <ul class="chips"><li>Incident reporting</li><li>Access control</li><li>BSIMM</li></ul>
+      <p class="links"><a href="projects/incident-report.html">Read the writeup &rarr;</a></p>
+      <p class="next"><span>Next layer &mdash; under construction</span>Detection. Log analysis and SIEM work is the skill I&rsquo;m building now.</p>
+      <p class="src">Academic lab &middot; Full Sail University &middot; Software Security, January&ndash;February 2026</p>
+    </article>
+  </section>
+
+  <!-- ================= ALL WORK ================= -->
+  <section class="solid" id="work">
+    <div class="wrap">
+      <div class="sec-head"><h2>All work</h2><p>Every project in full. All are academic and lab work, labeled as such on each page.</p></div>
+      <div class="grid">
+        <a class="w" href="projects/vulnerability-management-program.html"><span class="n">01</span><h3>Vulnerability management across a ten-host enterprise lab</h3><p>43 tickets &middot; 22 closed &middot; 2 sites</p></a>
+        <a class="w" href="projects/hypervisor-lab.html"><span class="n">02</span><h3>Three hypervisors, one lab: Fusion, UTM/QEMU and Proxmox</h3><p>4 guests &middot; 3 platforms &middot; 1 silent failure</p></a>
+        <a class="w" href="projects/ansible-aws-automation.html"><span class="n">03</span><h3>Agentless automation: Ansible from bare VM to cloud instance</h3><p>2 nodes &middot; 0 agents &middot; 1 playbook</p></a>
+        <a class="w" href="projects/firewall-scan-validation.html"><span class="n">04</span><h3>Measuring what a host firewall actually buys you</h3><p>19 findings &rarr; 4 informational</p></a>
+        <a class="w" href="projects/system-hardening.html"><span class="n">05</span><h3>Hardening a server and proving it worked</h3><p>94 Critical + High &rarr; 1 Medium</p></a>
+        <a class="w" href="projects/incident-report.html"><span class="n">06</span><h3>Writing the incident report, not just finding the bug</h3><p>~6 months undetected exposure</p></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="solid alt" id="about">
+    <div class="wrap about">
+      <img src="img/abner.jpg" alt="Abner Martinez" width="200" height="200" loading="lazy">
+      <div>
+        <div class="sec-head"><h2>About</h2></div>
+        <p>I spent four years in the U.S. Army as a Human Resources Specialist at Fort Bragg, where the work was records accuracy and regulatory compliance at scale &mdash; auditing personnel records against Army requirements, running inspections from Group to Battalion level, writing the standing procedures that governed recurring operations, and briefing what I found to the Company Commander and First Sergeant.</p>
+        <p>That turns out to be most of what security governance is: check the thing against the standard, document what you found, tell someone who can act on it, and write the procedure so the next person does it the same way. The technology was new to me. The discipline was not.</p>
+        <p>I hold a B.S. in Cybersecurity and an A.S. in Information Technology from Full Sail University, and I&rsquo;m completing a second bachelor&rsquo;s in Information Technology. I work as an IT and technology support specialist on contract, and I read, write and speak English and Spanish fluently.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="solid" id="contact">
     <div class="wrap">
       <div class="sec-head"><h2>Contact</h2></div>
-      <p>Saint Cloud, Florida. Open to systems administration, IT support, and security roles in Central Florida or remote.</p>
-      <ul class="contact-links">
+      <p>Saint Cloud, Florida. Open to systems administration, IT support and security roles in Central Florida or remote.</p>
+      <ul class="contact">
         <li><a href="mailto:abneralbizu@gmail.com">abneralbizu@gmail.com</a></li>
         <li><a href="https://www.linkedin.com/in/abner-martinez-albizu-15368433a">LinkedIn</a></li>
         <li><a href="https://github.com/abneralbizu">GitHub</a></li>
@@ -177,12 +228,11 @@
 
 </main>
 
-<footer class="site-foot">
-  <div class="wrap">
-    <span>&copy; 2026 Abner D. Martinez</span>
-    <span>All projects shown are academic and lab work.</span>
-  </div>
+<footer class="foot">
+  <span>&copy; 2026 Abner D. Martinez</span>
+  <span>All projects shown are academic and lab work. Visuals generated in code with Three.js.</span>
 </footer>
 
+<script type="module" src="main.js"></script>
 </body>
 </html>

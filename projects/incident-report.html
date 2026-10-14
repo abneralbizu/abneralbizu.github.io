@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Writing the incident report — Abner Martinez</title>
 <meta name="description" content="An access-control incident written the way an organization consumes one: scope, timeline, risk statement, stakeholders and an actionable remediation position.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -39,11 +40,23 @@
 
 <main class="wrap narrow">
 <article>
+  <div class="download">
+    <div>
+      <p class="what">The incident report and BSIMM assessment, redacted</p>
+      <p class="fine">11 pages, both documents in full. The scenario was set by the course. Contact details are removed.</p>
+    </div>
+    <a class="btn" href="../downloads/software-security-incident-report-and-bsimm.pdf" download>Download PDF &middot; 1.8&nbsp;MB</a>
+  </div>
   <h2>The incident</h2>
 
   <p>Critical access-control weaknesses in a student records application: unauthorized viewing, modification and deletion of student records, with a path to privilege escalation. The exposure had gone undetected for roughly six months.</p>
 
   <p>That last detail is the one that changes the character of the report. A flaw found in testing is a defect. A flaw that has been live and unmonitored for half a year is an incident, because the question is no longer "can this be exploited" but "what happened during the window, and can we tell?" Undetected duration is what turns a vulnerability writeup into an incident writeup.</p>
+
+  <figure class="figure doc">
+    <a href="../downloads/software-security-incident-report-and-bsimm.pdf"><img src="../img/work/incident-report-p1.jpg" width="1200" height="1339" alt="First page of the security incident report: incident summary and date and contact information" loading="lazy"></a>
+    <figcaption>The first page of the report. Contact details and the scenario officer's surname are redacted.</figcaption>
+  </figure>
 
   <h2>Why the format is the work</h2>
 

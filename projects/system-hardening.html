@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hardening a server and proving it worked — Abner Martinez</title>
 <meta name="description" content="Taking a server from 46 Critical and 48 High findings to a single Medium, validated by rescan, plus web application and TLS review.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -24,7 +25,7 @@
 
 <header class="page-head">
   <div class="wrap">
-    <p class="kicker">Academic project &middot; Securing Systems and Data &middot; 2026</p>
+    <p class="kicker">Academic project &middot; Securing Systems and Data</p>
     <h1>Hardening a server and proving it worked</h1>
     <p class="lede">A neglected server carrying 46 Critical and 48 High findings, brought down to a single Medium and verified by rescan — followed by the argument that a lower number is not the same thing as a secure system.</p>
     <ul class="toolset">
@@ -39,6 +40,13 @@
 
 <main class="wrap narrow">
 <article>
+  <div class="download">
+    <div>
+      <p class="what">The lab write-up and rescan report, redacted</p>
+      <p class="fine">6 pages: my answers to the lab questions, then the follow-up Nessus report. The host address is removed.</p>
+    </div>
+    <a class="btn" href="../downloads/securing-systems-os-hardening.pdf" download>Download PDF &middot; 0.5&nbsp;MB</a>
+  </div>
   <h2>Before and after</h2>
 
   <div class="table-scroll">
@@ -57,6 +65,11 @@
   <p>Ninety-four Critical and High findings on a single host. That number is what an unpatched server looks like after it has been left alone long enough, and it is not unusual — it is what the estate looks like anywhere patching has quietly stopped happening.</p>
 
   <p>The remediation was patching, and the verification was a rescan rather than an assumption. That second part is the habit worth having: the remediation step is where the work happens, but the rescan is the only thing that turns "I applied the updates" into evidence.</p>
+
+  <figure class="figure">
+    <img src="../img/work/hardening-rescan-summary.jpg" width="1400" height="805" alt="Nessus report for the patched server: 0 Critical, 0 High, 1 Medium, 0 Low, 24 Info" loading="lazy">
+    <figcaption>The follow-up Nessus report after patching. The one remaining Medium was SMB signing not required. Host address redacted.</figcaption>
+  </figure>
 
   <h2>Why a smaller number is not the same as secure</h2>
 
@@ -95,7 +108,7 @@
     <li><strong>Establish a recurring scan cadence.</strong> A single before-and-after is a snapshot; vulnerability management is the loop, not the event.</li>
   </ul>
 
-  <p class="note">Coursework completed for Securing Systems and Data, Full Sail University, 2026. The environment, the company and the e-commerce application are fictional and part of the course scenario. All scanning was performed against isolated lab systems.</p>
+  <p class="note">Coursework completed for Securing Systems and Data, Full Sail University. The environment, the company and the e-commerce application are fictional and part of the course scenario. All scanning was performed against isolated lab systems.</p>
 
 </article>
 </main>
