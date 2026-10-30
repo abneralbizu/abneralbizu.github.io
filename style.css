@@ -391,6 +391,10 @@ code {
   border-radius: 3px; padding: 1px 5px;
 }
 
+pre { margin: 22px 0 26px; padding: 14px 16px; overflow-x: auto; max-width: 100%;
+  background: var(--accent-wash); border: 1px solid var(--rule); border-radius: 6px; line-height: 1.5; }
+pre code { background: none; border: 0; padding: 0; font-size: .82rem; white-space: pre; }
+
 .table-scroll { overflow-x: auto; margin: 26px 0; max-width: 100%; }
 table { border-collapse: collapse; font-size: 0.93rem; min-width: 380px; }
 th, td { text-align: left; padding: 10px 20px 10px 0; border-bottom: 1px solid var(--rule); }

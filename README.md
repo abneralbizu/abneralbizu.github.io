@@ -17,7 +17,7 @@ downloads/          redacted coursework PDFs linked from the writeup pages
 vendor/             Three.js r170 + bloom post-processing, pinned and self-hosted
 style.css           styles for the six project writeup pages
 .nojekyll           tells GitHub Pages to serve files as-is
-projects/           the six full writeups each layer links to
+projects/           the full writeups: academic labs plus client work
 ```
 
 ## How the home page behaves
@@ -87,8 +87,12 @@ Then add a matching `<a class="card">` block to the `#work` section of
 
 These are deliberate. Keep them.
 
-1. **Every page states that it is academic or lab work**, in the eyebrow at the
-   top and again in the note at the bottom. Never imply commercial client work.
+1. **Every page states what kind of work it is**, in the kicker at the top and
+   again in the note at the bottom. Academic pages say academic. Client pages say
+   "Client work · Continental Investments International Network" and are
+   published only with the client's permission (given Oct 2026 for NCCMN and the
+   other Continental clients). Never present coursework as client work, and never
+   say a client site is live until it is.
 2. **No host addresses, hostnames, credentials, key material, account
    identifiers, or public IPs** from any lab. They add nothing and they are a
    liability.
