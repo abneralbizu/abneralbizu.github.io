@@ -1,4 +1,4 @@
-// Abner Martinez — portfolio. A data packet travels through seven layers of defense.
+// Abner Martinez Albizu — portfolio. A data packet travels through seven layers of defense.
 // Everything visual is generated in code: no image assets, no external models.
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
